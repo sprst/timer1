@@ -1,0 +1,1811 @@
+<!doctype html>
+<html lang=ja>
+    <head>
+        <meta charset=utf-8>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="色々な機能が備わったWebタイマーです。">
+        <title>Online Digital Timer v1.12.0</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+        <style>
+            html{
+                width:100vw;
+                height:100vh;
+            }
+            body{
+                max-width:100%;
+                min-height:100vh;
+                font-family:sans-serif;
+                margin:0px;
+            }
+            .boldtext{
+                font-family:'Roboto',monospace,system-ui,sans-serif !important;
+                font-feature-settings: "tnum" 1 !important;
+                font-variant-numeric: tabular-nums !important;
+                font-weight:700;
+            }
+            #timer_alltop{
+                background-color:#ffffff;
+            }
+            #timer_grtop{
+                text-align:center;
+                height:auto;
+                --old-display:inline-block;
+                display:flex;
+                justify-content:flex-start;
+                align-items:center;
+            }
+            #timer_top{
+                width:95vw;
+                --width:90vw;
+                max-width:95vw;
+                height:100%;
+                display:inline-block;
+                font-size:var(--fs);
+            }
+            #timer_view{
+                margin:8px;
+            }
+            #menuTop{
+                margin:8px;
+            }
+            #timer_top.active2.lastlen2{
+                --fs:calc(var(--width)/2.8);
+            }
+            #timer_top.active2.lastlen3{
+                --fs:calc(var(--width)/3.4);
+            }
+            #timer_top.active2.lastlen4{
+                --fs:calc(var(--width)/4.0);
+            }
+            
+            #timer_top.active3.lastlen2{
+                --fs:calc(var(--width)/4.2);
+            }
+            #timer_top.active3.lastlen3{
+                --fs:calc(var(--width)/4.8);
+            }
+            #timer_top.active3.lastlen4{
+                --fs:calc(var(--width)/5.4);
+            }
+            .btn{
+                border: 4px solid #afb1b5;
+                border-radius:32px;
+                font-size:32px;
+                padding:8px 16px;
+                cursor:pointer;
+                margin-top:16px;
+                margin-bottom:8px;
+                font-family:sans-serif;
+                background-color:#fafafa;
+                color:#202020;
+            }
+            .btn[disabled]{
+                border: 4px solid rgba(143,145,149,0.2);
+                background-color:rgba(238,238,238,0.2);
+                color:rgba(32,32,32,0.2);
+                cursor:not-allowed;
+            }
+            .btnsmall{ /*.btnsmallは.btnを1/4程度のサイズにする。(fontSizeでは1/2)　その代わり、文字の色を0x20(32)程度増やすこと。(線も細くなるから太くする。)#aabbccの場合は、#8899aa(rgb各項目を0x20減らす)*/
+                border: 2px solid #8f9195;
+                border-radius:24px;
+                font-size:16px;
+                padding:4px 8px;
+                cursor:pointer;
+                margin-top:8px;
+                margin-bottom:4px;
+                font-family:sans-serif;
+                background-color:#fafafa;
+                color:#080808;
+            }
+            .btnsmall[disabled]{
+                border: 2px solid rgba(111,113,117,0.2);
+                background-color:rgba(206,206,206,0.2);
+                color:rgba(8,8,8,0.2);
+                cursor:not-allowed;
+            }
+            #setting{
+                width:85%;
+                height:85%;
+                padding:0px;
+                border-radius:24px;
+                border:0px;
+                container-type:inline-size; /*cqwの基準に設定*/
+            }
+            #setting::backdrop{
+                background:rgba(0,0,0,0.5)
+            }
+            #setting_top{
+                --max-width:100cqw; /*vwは全体の横幅、cqwは親要素の横幅*/
+                --padding:16px;
+                max-width:calc(var(--max-width) - var(--padding) * 2);
+                width:calc(var(--max-width) - var(--padding) * 2);
+                padding:var(--padding);
+                max-height:max-content;
+                min-height:100%;
+                border-radius:24px;
+                box-shadow:inset 0 0 0 2px #dfe1e5;
+            }
+            #setting_besideLineUp{
+                width:100%;
+                max-width:100cqw;
+                height:max-content;
+                display:flex;
+                justify-content:flex-start;
+                flex-wrap:wrap;
+            }
+            .settingDetails{
+                cursor:pointer;
+                width:100%;
+                padding-bottom:8px;
+            }
+            .inputNumberBox{
+                border: 4px solid #dfe1e5;
+                width:96px;
+                font-size:24px;
+                border-radius: 8px;
+                padding: 8px 16px;
+                margin: 0px;
+                font-family:'Noto Sans JP',sans-serif !important;
+                margin-top:8px;
+                margin-bottom:8px;
+            }
+            .inputNumberBox[disabled]{
+                background-color:rgba(223,225,229,0.5);
+                color:rgba(0,0,0,0.3);
+            }
+            .inputNumberBox_s{
+                border: 3px solid #dfe1e5;
+                width:72px;
+                font-size:18px;
+                border-radius: 8px;
+                padding: 6px 12px;
+                margin: 0px;
+                font-family:'Noto Sans JP',sans-serif !important;
+                margin-top:6px;
+                margin-bottom:6px;
+            }
+            .inputNumberBox_s[disabled]{
+                background-color:rgba(223,225,229,0.5);
+                color:rgba(0,0,0,0.3);
+            }
+            .inputNumberBox_s_width192px{
+                border: 3px solid #dfe1e5;
+                width:192px;
+                font-size:18px;
+                border-radius: 8px;
+                padding: 6px 12px;
+                margin: 0px;
+                font-family:'Noto Sans JP',sans-serif !important;
+                margin-top:6px;
+                margin-bottom:6px;
+            }
+            .inputNumberBox_s_width192px[disabled]{
+                background-color:rgba(223,225,229,0.5);
+                color:rgba(0,0,0,0.3);
+            }
+            form{
+                cursor:default;
+            }
+            dialog.maindialog{
+                width:85%;
+                height:85%;
+                padding:0px;
+                border-radius:24px;
+                border:0px;
+                container-type:inline-size; /*cqwの基準に設定*/
+            }
+            dialog.maindialog:not(.nbackdrop)::backdrop{
+                background:rgba(0,0,0,0.5)
+            }
+            div.maindialog{
+                --max-width:100cqw; /*vwは全体の横幅、cqwは親要素の横幅*/
+                --padding:16px;
+                max-width:calc(var(--max-width) - var(--padding) * 2);
+                width:calc(var(--max-width) - var(--padding) * 2);
+                padding:var(--padding);
+                max-height:max-content;
+                min-height:100%;
+                border-radius:24px;
+                box-shadow:inset 0 0 0 2px #dfe1e5;
+            }
+            #miniquickmenu_main{
+                border: 1px solid #8f9195;
+                border-radius:32px;
+                font-size:32px;
+                padding:0px 4px 4px;
+                font-family:sans-serif;
+                background-color:#ffffff;
+                color:#000000;
+                padding-bottom:8px;
+                display:flex;
+                justify-content:flex-start;
+            }
+            pre{
+                white-space:normal;
+                overflow-wrap:break-word;
+                word-break:break-all;
+            }
+            #setting_prealarm_timing_print{
+                border: 2px solid #dfe1e5;
+                min-height:220px;
+                max-height:220px;
+                overflow-y:auto;
+                min-width:90%;
+            }
+            #setting_prealarm_timing_print *:focus{
+                outline: 2px solid #0066cc;
+                outline-offset: 2px;
+            }
+            .el_gr_01{
+                border:0px;
+                background-color:#ffffff;
+            }
+            .el_gr_01[disabled] .el_gr_01_child{
+                opacity:0.5;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <div id="timer_alltop">
+                <div id="timer_view">
+                    <div id="timer_grtop">
+                        <span id="timer_top" class="boldtext active3 lastlen2"><span id="timer_hour">00</span><span id="hour_min_join"><sp-e s=8 mirror>:</sp-e></span><span id="timer_minute">00</span><span id="min_sec_join"><sp-e s=8 mirror>:</sp-e></span><span id="timer_second">00</span></span>
+                    </div>
+                </div>
+                <div id="menuTop">
+                    <sp-e s=8></sp-e>
+                    <button class="btn" id="start" title="タイマーを開始します。">開始</button>
+                    <sp-e s=8></sp-e>
+                    <button class="btn" id="stop" title="タイマーを停止します。">停止</button>
+                    <sp-e s=8></sp-e>
+                    <button class="btn" id="reset" title="タイマーの制限時間を設定時間にリセットします。">リセット</button>
+                    <sp-e s=8></sp-e>
+                    <button class="btn" id="to_setting" title="設定画面を開きます。">設定</button>
+                    <sp-e s=8></sp-e>
+                    <button id="fullscreenChange" class="btn" style="margin:8px 0px;" title="全画面表示を切り替えます。">
+                        <sp-e s=0 template="fullscreen1" id="toFullscreen" style="display:block;"></sp-e>
+                        <sp-e s=0 template="fullscreen2" id="exitFullscreen" style="display:none;"></sp-e>
+                    </button>
+                    <sp-e s=8></sp-e>
+                    <button id="miniquickmenu" class="btn" title="簡易的なクイックメニューを表示します。詳細的な指定を行う場合は設定タブより行ってください。">≡</button>
+                    <span id="miniquickmenu_main" style="display:none">
+                        <button onclick="btnpress('.qm1,.qm2');template_lim(0,0,30,true)" class="btnsmall qm2 miniquick" style="display:auto" enableAuto>+30秒</button>
+                        <button onclick="btnpress('.qm1,.qm2');template_lim(0,1,0,true)" class="btnsmall qm2 miniquick" style="display:auto" enableAuto>+1分</button>
+                        <button onclick="btnpress('.qm1,.qm2');template_lim(0,5,0,true)" class="btnsmall qm2 miniquick" style="display:auto" enableAuto>+5分</button>
+                        <button onclick="btnpress('.qm1,.qm2');template_lim(0,10,0,true)" class="btnsmall qm2 miniquick" style="display:auto" enableAuto>+10分</button>
+                    </span>
+                </div>
+            </div>
+            <dialog id="setting">
+                <div id="setting_top">
+                    <div id="setting_besideLineUp">
+                        <div>
+                            <p>Setting - Online Digital Timer</p>
+                            <span id="setting_timelimit_print">残り時間: 00:00:00</span>
+                            <p> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </p>
+                        </div>
+                        <details class="settingDetails" open>
+                            <summary title="タイマーの制限時間を指定します。">制限時間設定</summary>
+                            <form id="setting_timelimit" action="#" onsubmit="event.preventDefault()">
+                                <label>
+                                    <input type="number" name="timelimit" id="setting_timelimit_h" class="inputNumberBox" min=0 value=0 />
+                                    <sp-e s=8 style="cursor:text;" mirror>時間</sp-e>
+                                </label>
+                                <label>
+                                    <input type="number" name="timelimit" id="setting_timelimit_m" class="inputNumberBox" min=0 value=0 />
+                                    <sp-e s=8 style="cursor:text;" mirror>分</sp-e>
+                                </label>
+                                <label>
+                                    <input type="number" name="timelimit" id="setting_timelimit_s" class="inputNumberBox" min=0 value=0 />
+                                    <sp-e s=8 style="cursor:text;" mirror>秒</sp-e>
+                                </label>
+                            </form>
+                        </details>
+                        <details class="settingDetails" open>
+                            <summary title="テンプレートから制限時間を選択、クリックで時間追加などができます。">クイックメニュー</summary>
+                            <form id="setting_quickmenu" action="#" onsubmit="event.preventDefault()">
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,0,0,false)" class="btnsmall qm1" enableAuto>リセット</button>
+                                <button onclick="btnpress('.qm1,.qm2');timeLimitArrange()" class="btnsmall qm1" title="1時間60分-30秒のようなぐちゃぐちゃになっているデータを、1時間59分30秒のように揃えます。" enableAuto>揃える</button>
+                                <br />
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,0,10,false)" class="btnsmall qm1" enableAuto>10秒</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,0,30,false)" class="btnsmall qm1" enableAuto>30秒</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,1,0,false)" class="btnsmall qm1" enableAuto>1分</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,3,0,false)" class="btnsmall qm1" enableAuto>3分</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,5,0,false)" class="btnsmall qm1" enableAuto>5分</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,10,0,false)" class="btnsmall qm1" enableAuto>10分</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,30,0,false)" class="btnsmall qm1" enableAuto>30分</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(1,0,0,false)" class="btnsmall qm1" enableAuto>1時間</button>
+                                <br />
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,0,10,true)" class="btnsmall qm2" enableAuto>+10秒</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,0,30,true)" class="btnsmall qm2" enableAuto>+30秒</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,1,0,true)" class="btnsmall qm2" enableAuto>+1分</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,3,0,true)" class="btnsmall qm2" enableAuto>+3分</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,5,0,true)" class="btnsmall qm2" enableAuto>+5分</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,10,0,true)" class="btnsmall qm2" enableAuto>+10分</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,30,0,true)" class="btnsmall qm2" enableAuto>+30分</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(1,0,0,true)" class="btnsmall qm2" enableAuto>+1時間</button>
+                                <br />
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,0,-10,true)" class="btnsmall qm2" enableAuto>-10秒</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,0,-30,true)" class="btnsmall qm2" enableAuto>-30秒</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,-1,0,true)" class="btnsmall qm2" enableAuto>-1分</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,-3,0,true)" class="btnsmall qm2" enableAuto>-3分</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,-5,0,true)" class="btnsmall qm2" enableAuto>-5分</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,-10,0,true)" class="btnsmall qm2" enableAuto>-10分</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(0,-30,0,true)" class="btnsmall qm2" enableAuto>-30分</button>
+                                <button onclick="btnpress('.qm1,.qm2');template_lim(-1,0,0,true)" class="btnsmall qm2" enableAuto>-1時間</button>
+                            </form>
+                        </details>
+                        <details class="settingDetails">
+                            <summary title="タイマーの時間設定をサポートするメニューです。">発展メニュー</summary>
+                            <form id="setting_advancedmenu" action="#" onsubit="event.preventDefault()">
+                                <ul>
+                                    <li>
+                                        <div>
+                                            <p>終了時刻を基準とした制限時間設定</p>
+                                            <input type="datetime-local" class="inputNumberBox_s_width192px" name="adv_date" />
+                                            <button type=button name="adv_date_submit" class="btnsmall">反映(終了時刻を基準にして設定)</button>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </form>
+                        </details>
+                        <details class="settingDetails">
+                            <summary title="タイマーの表示形式を切り替えます。">タイマー表示設定</summary>
+                            <form id="setting_timerview" action="#" onsubmit="event.preventDefault()">
+                                <label><input type="radio" name="timerview" value="auto" checked />自動</label>
+                                <label><input type="radio" name="timerview" value="hms" />hh:mm:ss</label>
+                                <label><input type="radio" name="timerview" value="ms" />mm:ss</label>
+                            </form>
+                        </details>
+                        <details class="settingDetails">
+                            <summary title="タイマーが終了したときのアラート音や音量などを設定します。">サウンド設定</summary>
+                            <form id="setting_sound" action="#" onsubmit="event.preventDefault()">
+                                <input type=range min=0 max=1 step=0.05 value=0.5 name="soundvolume" style="width:60%" />
+                                <span id="setting_soundvolume_print">現在の設定値: 50%</span>
+                                <span style="font-size:20px;align-items:center;display:flex;flex-wrap:wrap" />
+                                    <label><input type="radio" name="soundselect" value="s1" checked />Alarm1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="sounds.s1.play()" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e><br />
+                                    <label><input type="radio" name="soundselect" value="s2" />Alarm2</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="sounds.s2.play()" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e><br />
+                                    <label><input type="radio" name="soundselect" value="s5" />Alarm3</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="sounds.s5.play()" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e><br />
+                                    <label><input type="radio" name="soundselect" value="s3" />Piano1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="sounds.s3.play()" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e><br />
+                                    <label><input type="radio" name="soundselect" value="s4" />Piano2</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="sounds.s4.play()" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e><br />
+                                </span>
+                            </form>
+                        </details>
+                        <details class="settingDetails">
+                            <summary title="タイマーが終了したときのアラート音の継続時間を設定します。">アラート継続時間</summary>
+                            <span>分数で指定</span>
+                            <form id="setting_repeattime" action="#" onsubmit="event.preventDefault()">
+                                <input type=range min=0.5 max=30 step=0.5 value=1 name="repeattime" style="width:60%;" />
+                                <span id="setting_repeattime_print">現在の設定値: 1分</span>
+                            </form>
+                        </details>
+                        <details class="settingDetails">
+                            <summary title="予告音の鳴らすタイミングの設定と音量調整・音源設定を行います。">予告音設定(Pre-Alarm)</summary>
+                            <form id="setting_prealarm" action="#" onsubmit="event.preventDefault()">
+                                <br style="font-size:0.5rem;" />
+                                <div id="setting_prealarm_timing_print">
+                                    
+                                </div>
+                                <div id="setting_prealarm_timing">
+                                    <input type="number" name="timing" id="setting_prealarm_timing_h" class="inputNumberBox_s" min=0 value=0 />
+                                    <sp-e s=8 style="cursor:text;" mirror>時間</sp-e>
+                                    <input type="number" name="timing" id="setting_prealarm_timing_m" class="inputNumberBox_s" min=-1 value=0 />
+                                    <sp-e s=8 style="cursor:text;" mirror>分</sp-e>
+                                    <input type="number" name="timing" id="setting_prealarm_timing_s" class="inputNumberBox_s" min=-1 value=0 />
+                                    <sp-e s=8 style="cursor:text;" mirror>秒</sp-e>
+                                    <button id="setting_prealarm_timing_p" class="btnsmall" type="button">追加</button>
+                                </div>
+                                <br style="font-size:0.5rem;" />
+                                <div id="setting_prealarm_sound">
+                                    <input type=range min=0 max=1 step=0.05 value=0.5 name="soundvolume" style="width:60%" />
+                                    <span id="setting_prealarm_soundvolume_print">現在の設定値: 50%</span>
+                                    <span style="font-size:20px;align-items:center;display:flex;flex-wrap:wrap" />
+                                        <label><input type="radio" name="soundselect" value="p1" checked />Pre-Alarm1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="sounds.p1.play()" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e><br />
+                                        <label><input type="radio" name="soundselect" value="p2" />Pre-Alarm2</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="sounds.p2.play()" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e><br />
+                                </span>
+                                </div>
+                            </form>
+                        </details>
+                        <details class="settingDetails">
+                            <summary title="デフォルトで5秒前から開始されるカウントダウンの設定を行います。">カウントダウン設定</summary>
+                            <form id="setting_countdown" action="#" onsubmit="event.preventDefault()">
+                                <span>カウントダウンの有効化</span>
+                                <br />
+                                <label><input type=radio name="cdactive" value=1 checked />enable</label>
+                                <label><input type=radio name="cdactive" value=0 />disable</label>
+                                <br />
+                                <span>カウントダウンの開始タイミング</span>
+                                <br />
+                                <sp-e s=8 mirror>終了まで</sp-e>
+                                <input type=number name="startTiming" class="inputNumberBox_s" min=0 value=5 />
+                                <sp-e s=8 mirror>秒前から開始</sp-e>
+                            </form>
+                        </details>
+                        <details class="settingDetails">
+                            <summary title="タイマーサイズ調整">サイズ調整</summary>
+                            <form id="setting_timersize" action="#" onsubmit="event.preventDefault()">
+                                <input type=range min=0.02 max=2 step=0.02 value=1 name="timersize" style="width:60%;" />
+                                <span id="setting_timersize_print">現在の設定値: 100%</span>
+                                <button class="btnsmall" id="setting_timersize_reset">リセット</button>
+                            </form>
+                        </details>
+                        <details class="settingDetails">
+                            <summary title="データ消去などの保存データ関連の設定です。">データ・情報</summary>
+                            <button class="btnsmall" id="powerwash" title="ブラウザに保存されている全ての保存データを削除します。">データ全消去</button>
+                            <button class="btnsmall" id="to_about" title="このプログラムの詳細ページを開きます。">詳細</button>
+                            <button class="btnsmall" id="to_log" title="システムログを表示します。">Log</button>
+                        </details>
+                        <button class="btn" id="to_home" style="font-size:1rem;" title="タイマーの画面に戻ります。">戻る</button>
+                    </div>
+                </div>
+            </dialog>
+            <dialog id="powerwash_screen" class="maindialog nbackdrop">
+                <div id="powerwash_screen_top" class="maindialog">
+                    <p>Data Reset - Online Digital Timer</p>
+                    <p> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </p>
+                    <span onclick="powerwash_i++;if (powerwash_i>6){g('powerwash_screen_secret_contents02').style.display='block'}">削除中...</span>
+                    <br />
+                    <span id="powerwash_screen_secret_contents02" style="display:none">!function(){clearInterval(autosave_stop);localStorage.removeItem("/timer/v1/mainsave/cf");location.reload()}()</span>
+                    <br />
+                    <br />
+                    <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="powerwash_screen_rorateElement" style="display:flex;align-items:center;stroke:green;zoom:2;" onchange=(function(){i=Math.floor(Math.random()*8);j=Math.floor(Math.random()*8);window.stopKey=setInterval(function(){this.style.rotate=(j%360+"deg");j+=(i+=0.125)}.bind(this),20)}).call(this) onclick=g('powerwash_screen_secret_contents01').style.display='block'><circle cx="12" cy="12" r="10"></circle><line x1="6" y1="12" x2="9" y2="16"></line><line x1="9" y1="16" x2="18" y2="9"></line></svg>
+                    <br />
+                    <span id="powerwash_screen_secret_contents01" style="display:none">クソ手抜きローディングスピナー風の意味分からない回転(スクショしてみて)</span>
+                    
+                </div>
+            </dialog>
+            <dialog id="about" class="maindialog nbackdrop">
+                <div id="about_top" class="maindialog">
+                    <p>About - Online Digital Timer</p>
+                    <p> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </p>
+                    <p>Online Digital Timer v1.12.0</p>
+                    <details>
+                        <summary>history</summary>
+                        <ul>
+                            <li>
+                                <details>
+                                    <summary>v1.0.0 (旧表記v1.0.0)</summary>
+                                    <p>初のタイマー。hh:mm:ss表示のみで、まだ動かすことが出来なかった。あくまでもCSSもテストバージョン。(非公開)</p>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.1.0 (旧表記v1.1.0)</summary>
+                                    <ul>
+                                        <li><p>hh:ssモード(タイマー表示設定 > hh:ss)追加</p></li>
+                                        <li><p>自動切り替えモード(タイマー表示設定 > 自動)追加</p></li>
+                                        <li><p>メイン制御システム・描画処理関数、その他関数追加</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.2.0 (旧表記v1.1.1)</summary>
+                                    <ul>
+                                        <li><p>JavaScript拡張</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.3.0 (旧表記v1.2.0)</summary>
+                                    <ul>
+                                        <li><p>バグ修正</p></li>
+                                        <li><p>設定タブ追加</p></li>
+                                        <li><p>アラーム音機能追加</p></li>
+                                        <li><p>クイックメニュー追加(当時は「テンプレート」)</p></li>
+                                        <li><p>アラーム音自動停止機能追加(設定 > アラート継続時間)</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.4.0 (旧表記v1.2.1)</summary>
+                                    <ul>
+                                        <li><p>バグ修正</p></li>
+                                        <li><p>クイックメニュー拡張</p></li>
+                                        <li><p>アラーム音試し聞き機能追加</p></li>
+                                        <li><p>アラーム音音量調整機能追加</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.4.1 (旧表記v1.2.2)</summary>
+                                    <ul>    
+                                        <li><p>タイマー揃え機能追加(設定 > クイックメニュー > 揃える)</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.5.0 (旧表記v1.2.3)</summary>
+                                    <ul>
+                                        <li><p>タイマーサイズ調整機能追加(設定 > サイズ調整)</p></li>
+                                        <li><p>詳細タブ(このタブ)追加(設定 > データ・情報 > 詳細)</p></li>
+                                        <li><p>初期化画面の謎のローディングスピナー追加(超手抜き)</p></li>
+                                        <li><p>設定タブのミニタイマー追加</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.5.1 (旧表記v1.2.4)</summary>
+                                    <ul>
+                                        <li><p>タイマーのレンダリング修正・変更</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.5.2 (旧表記v1.2.5)</summary>
+                                    <ul>
+                                        <li><p>ライセンスをCC BY-SA 4.0からCC BY 4.0へ変更。</p></li>
+                                        <li><p>タイマーのレンダリング修正・変更</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.5.3 (旧表記v1.2.5 stable2)</summary>
+                                    <ul>
+                                        <li><p>フォントバグ修正</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.6.0 (旧表記v1.2.6)</summary>
+                                    <ul>
+                                        <li><p>アラーム音追加</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.6.1 (旧表記v1.2.6 stable2)</summary>
+                                    <ul>
+                                        <li><p>Safariレンダリングバグ修正</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.6.2 (旧表記v1.2.6 stable3)</summary>
+                                    <ul>
+                                        <li><p>フォント追加</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.6.3 (旧表記v1.2.6 stable4)</summary>
+                                    <ul>
+                                        <li><p>CSS修正</p></li>
+                                        <li><p>バグ修正</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.7.0 (旧表記v1.2.7)</summary>
+                                    <ul>
+                                        <li><p>JS修正</p></li>
+                                        <li><p>ログ表示システム追加</p></li>
+                                        <li><p>一時停止を分かりやすくしました</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.8.0 (旧表記v1.2.8)</summary>
+                                    <ul>
+                                        <li><p>フルスクリーン画面にできる仕様追加</p></li>
+                                        <li><p>多くの修正</p></li>
+                                        <li><p>バージョン表記ルール変更(業界標準に合わせます)</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.9.0</summary>
+                                    <ul>
+                                        <li><p>音源追加</p></li>
+                                        <li><p>メニュー一覧に簡易クイックメニュー追加</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.9.1</summary>
+                                    <ul>
+                                        <li><p>バグ修正</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.10.0</summary>
+                                    <ul>
+                                        <li><p>オフラインパッケージ正式サポート開始</p></li>
+                                        <li><p>サウンド読み込み関数アップデート</p></li>
+                                        <li><p>CLS値改善(0.15前後から0.02程度へ改善)</p></li>
+                                        <li><p>5秒前からの音付きカウントダウン実装</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.11.0</summary>
+                                    <ul>
+                                        <li><p>Pre-Alarm追加(終了数分前にプレアラームが鳴る)</p></li>
+                                        <li><p>バグ修正</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.11.1</summary>
+                                    <ul>
+                                        <li><p>Pre-Alarm設定画面操作改善</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.11.2</summary>
+                                    <ul>
+                                        <li><p>制限時間設定を使いやすく改善</p></li>
+                                        <li><p>予告音設定の予告音登録欄を使いやすく改善</p></li>
+                                        <li><p>その他バグ修正・改善</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.12.0</summary>
+                                    <ul>
+                                        <li><p>カウントダウン音声の再生開始タイミング設定機能追加</p></li>
+                                        <li><p>カウントダウン音声のON/OFF切り替え機能追加</p></li>
+                                        <li><p>「発展メニュー」追加(設定内)</p></li>
+                                        <li><p>発展メニューに「終了時刻を基準とした制限時間設定」項目を追加</p></li>
+                                        <li><p>URLに時間を埋め込める機能追加(<a href="https://ks-seed0310.github.io/timer1/timer1/wiki/urlparam_embed.html" target="_blank">Wiki</a>)</p></li>
+                                        <li><p>タイトルから残りの制限時間が分かるように変更</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                        </ul>
+                    </details>
+                    <p> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </p>
+                    <p>© Online Digital Timer 2026 seed</p>
+                    <div style="text-align:center;">
+                        <a href="https://creativecommons.org/licenses/by/4.0/deed.ja" target="_blank" rel="noopener noreferer">
+                            <img src="https://licensebuttons.net/l/by/3.0/88x31.png" alt="クリエイティブ・コモンズ・ライセンス">
+                        </a>
+                    </div>
+                    <p>このプログラムは、CC BY 4.0 Licenseにより公開されています。</p>
+                    <p>プログラムの学習に使ったり、このタイマーをベースにして新しいものを作ったり...</p>
+                    <p>色々な使い方ができますので楽しんで使ってください！</p>
+                    <p>ただ、そんなクレジットを書かせるほど凄いプログラムでも有りません。</p>
+                    <p>ですので、以下のルールのみお守りいただけると幸いです。</p>
+                    <ul>
+                        <li>一部のコード抜き取りなどはクレジット不必要</li>
+                        <li>全体の抜き取り、このHTMLをベースとした改良の場合はクレジット必要(一番下の方にひっそり置くのでも良いです。見えれば良いです。)</li>
+                    </ul>
+                    <p>詳しくは自分で調べてみましょう！</p>
+                    <p>そんな私が怒ることでもないので何も言いませんが、自分で調べてみることも大切だし、実際のドロドロとした嫌な部分も見れますよ...(求めてない)</p>
+                    <details>
+                        <summary>勘違い防止のための難しい文章が書いてあるかもしれない独自ルール</summary>
+                        <h3>1. クレジット</h3>
+                        <p>CC BY 4.0 Licenseでは、利用者は、利用する媒体から見ることが出来る場所に表示する義務を負います。</p>
+                        <p>まあ基本的には書きましょう。おすすめはフッターやクレジットタブを作ることです。</p>
+                        <p>私は書いてほしいなんて思っていませんが、万が一のトラブル防止のためにクレジットだけでも書いておくことを勧めます。書けば自由なライセンスなので。</p>
+                        <h3>2. 変更点の明示</h3>
+                        <p>「どこを変えました」って書かなくて良いです！クレジットに「参考にして作っています」「ベースにして編集しています」等で十分です！</p>
+                        <p>「〇〇が理由で△△を変えました」←こんな文章要らないです！変えたことだけクレジットに書いておくと良いかも?</p>
+                        <h3>3. お墨付きの禁止</h3>
+                        <p>クレジットを記載する際、あたかも私が応援しているような記述はやめてください。トラブル嫌です。</p>
+                        <p>(言うまでもないね)</p>
+                        <h3>4. 他の人の邪魔の禁止</h3>
+                        <p>妨害など人の嫌がることはやめましょう！</p>
+                        <h3>5. 自由の尊重</h3>
+                        <p>MITライセンスみたいなことになっていますが(実際は違うライセンスですので勘違いしないでね)、クレジットを記載しておけば後はあなたの自由にできます！</p>
+                        <p>楽しいアレンジライフを送ってください！</p>
+                        <h3>最後に</h3>
+                        <p>私自身もまだまだライセンスには詳しくないし、使いこなせてもいません。(Non-Library勢だから使うところもないから覚えないし)</p>
+                        <p>けど、ライセンスは覚えていて損はないです！</p>
+                        <p>守っていなければ怒るなんてことはかなりよっぽどのことがない限りやらないと思いますが、間違ってもいいので練習になったら嬉しいです！</p>
+                        <p>ぜひ一度CC BY 4.0を見てみることをおすすめします！もっと詳しく慣れて使いこなせるようになると思います！</p>
+                    </details>
+                    <details>
+                        <summary>なぜ、わざわざCC BY 4.0 License?</summary>
+                        <p>それは、著作権の学習になればいいかなと思ったからです。</p>
+                        <p>別にクレジットを書いてほしいとは何一つ思っていませんが、著作権表記を実際に練習してもらって実感するのがいいかなと思ったからです。</p>
+                        <p>練習や学習にでも役立てていただけると嬉しいです。</p>
+                    </details>
+                    <p>私の方針は、「楽しんでふざける」です！</p>
+                    <p>ぜひ、楽しみながらふざけたプログラムを作ってみてはいかがでしょうか？</p>
+                    <button class="btn" style="font-size:1rem;" onclick="menuel.about.close()">戻る</button>
+                </div>
+            </dialog>
+            <dialog id="log" class="maindialog nbackdrop">
+                <div id="log_top" class="maindialog">
+                    <p>ここにログが表示されます。</p>
+                    <button class="btnsmall" id="log_return">戻る</button>
+                    <div id="log_print">
+                        
+                    </div>
+                </div>
+            </dialog>
+        </div>
+        <script src="timer_offline.js"></script>
+        <script>
+            const constant={
+                title:"Online Digital Timer v1.12.0",
+                titlechange_add2_ts:{
+                    none:["",""],
+                    ltgt:["<",">"],
+                    nazo1:["[","]"],
+                    nazo2:["{","}"],
+                },
+            }
+            let titlechange_writetext
+            function titlechange(add="",add2="nazo1"){
+                const a=constant.titlechange_add2_ts[add2]
+                document.title=a[0]+add+a[1]+" - "+constant.title
+                titlechange_writetext=add
+            }
+            function range(start,stop,step=1){
+                if(start===undefined||stop===undefined)return [];
+                if(step===0)return [];
+                const re=[]
+                if(step>0){
+                    for(let i=start;i<stop;i+=step){re.push(i)}
+                }else{
+                    for(let i=start;i>stop;i+=step){re.push(i)}
+                }
+                return re
+            }
+            const logel={
+                print:document.getElementById("log_print")
+            }
+            const authts={
+                sound:"Sound System",
+            }
+            function logadd(msg,author){
+                const t=new Date()
+                const a=authts[author]??"Anonymous"
+                const p=document.createElement("pre")
+                const m=msg.replace(/\n/g,"<br>").replace(/\t/g,"&#x09;")
+                logel.print.insertBefore(p,logel.print.firstElementChild)
+                p.innerHTML=`[${t.toLocaleTimeString()}:${t.getMilliseconds()}<sp-e s=4 mirror>:</sp-e>${a}] ${msg}`
+            }
+            
+            let powerwash_i=0
+            async function btnpress(el_or_selector){
+                if ((typeof el_or_selector)==="object"){
+                    const el=el_or_selector
+                    el.removeAttribute("enableAuto")
+                    if (el.disabled!=undefined){
+                        el.disabled=true
+                    }
+                    await new Promise(r=>setTimeout(r,500))
+                    if (el.disabled!=undefined){
+                        el.disabled=false
+                    }
+                    el.setAttribute("enableAuto","")
+                }else{
+                    if ((typeof el_or_selector)==="string"){
+                        const el=[...document.querySelectorAll(el_or_selector)]
+                        el.forEach(elem=>btnpress(elem))
+                    }
+                }
+            }
+            const sounds_url={
+                s1:"https://ks-seed0310.github.io/audio_storage/kitchen_timer_alarm.txt",
+                s2:"https://ks-seed0310.github.io/audio_storage/kitchen_timer_bell.txt",
+                s3:"https://ks-seed0310.github.io/audio_storage/timer_melody_original.txt",
+                s4:"https://ks-seed0310.github.io/audio_storage/timer_melody_ode_to_joy_loop.txt",
+                s5:"https://ks-seed0310.github.io/audio_storage/timer_alarm_gemini01.txt",
+                p1:"https://ks-seed0310.github.io/audio_storage/preAlarm_gemini01.txt",
+                p2:"https://ks-seed0310.github.io/audio_storage/pipon_time_signal.txt",
+                countdown1:"https://ks-seed0310.github.io/audio_storage/countdown_beep.txt",
+            }
+            const sounds_ts={// sx:sound(alarm) px:sound(pre-alarm)
+                s1:"kitchen_timer_alarm",
+                s2:"kitchen_timer_bell",
+                s3:"timer_melody_original",
+                s4:"timer_melody_ode_to_joy_loop",
+                s5:"timer_alarm_gemini01",
+                p1:"preAlarm_gemini01.txt",
+                p2:"pipon_time_signal",
+                countdown1:"countdown_beep",
+            }
+            const sounds={
+                
+            }
+            const sounds_k=[]
+            async function clockSoundLoad(){
+                const su=Object.entries(sounds_url)
+                const cache=await caches.open("sound_data")
+                const param=new URLSearchParams(location.search)
+                const reload=param.get("reload")!=null
+                for (const [key,url] of su){
+                    try{
+                        const k=("/audio_storage/audioCache/"+sounds_ts[key])
+                        
+                        if (!navigator.onLine&&!await cache.match(k)){
+                            console.log(1)
+                            if (window.soundsOfflinePackage&&soundsOfflinePackage[key]){
+                                sounds[key]=new Audio(soundsOfflinePackage[key])
+                                sounds_k.push(key)
+                                logadd("オフラインパッケージからサウンドを読み込みました(code: "+key+")","sound")
+                            }else{
+                                throw new Error("オフライン中かつキャッシュが存在しません。\nネットワークに接続してください。\n\t対象: "+sounds_ts[key]+"\n\tcode: "+key)
+                                logadd("オフライン中かつキャッシュが存在しません。\nネットワークに接続してください。\n\t対象: "+sounds_ts[key]+" (code: "+key+")","sound")
+                            }
+                        }else if(navigator.onLine&&(reload||!await cache.match(k))){
+                            console.log(2)
+                            const re=await fetch(url+(reload?("?"+Date.now()):""))
+                            if (re.status!==200){
+                                console.log("HTTP Status Code "+re.status+" Error. (code: "+key+")")
+                                throw new Error("HTTP Status Code "+re.status+" Error.")
+                            }
+                            if (location.protocol.includes("http")){
+                                cache.put(k,re.clone())
+                            }
+                            sounds[key]=new Audio(await re.text())
+                            sounds_k.push(key)
+                            logadd("ネットワークからサウンドを読み込みました(code: "+key+")","sound")
+                        }else{
+                            console.log(3)
+                            sounds[key]=new Audio(await (await cache.match(k)).text())
+                            sounds_k.push(key)
+                            logadd("キャッシュからサウンドを読み込みました(code: "+key+")","sound")
+                        }
+                    }catch(e){
+                        if (window.soundsOfflinePackage&&soundsOfflinePackage[key]){
+                            sounds[key]=new Audio(soundsOfflinePackage[key])
+                            sounds_k.push(key)
+                            logadd("ネットワークからサウンドを読み込むことに失敗したため、オフラインパッケージからサウンドを読み込みました(code: "+key+")","sound")
+                        }
+                        else{
+                            console.warn(e)
+                            logadd("読み込みエラー:"+e,"sound")
+                        }
+                    }
+                }
+            }
+            async function playsound(audio,audiostop=true){
+                if (!audio)return false
+                if (audiostop)stopsound(audio)
+                return new Promise((resolve,reject)=>{
+                    audio.onended=()=>{
+                        audio.onended=null
+                        audio.onerror=null
+                        resolve(true)
+                    }
+                    audio.onerror=(e)=>{
+                        audio.onended=null
+                        audio.onerror=null
+                        reject(e)
+                    }
+                    audio.play().catch(e=>{
+                        audio.onended=null
+                        audio.onerror=null
+                        reject(e)
+                    })
+                })
+            }
+            function stopsound(audio,reset=true){
+                if (!audio)return false
+                audio.pause()
+                audio.currentTime=0
+                audio.onended=null
+                audio.onerror=null
+                if (reset)audio.load()
+            }
+            function volumechange(audio,volume){
+                audio.volume=volume??cf.volume
+            }
+            class HTMLSpaceElement extends HTMLElement{
+                connectedCallback(){
+                    const template_ts={
+                        volumeIcon1:`<svg viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="11" fill="#619fcf" /><path d="M10.5 6L6.5 9.5H3.5v5h3l4 3.5V6z" fill="#ffffff" /><g fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 9a4 4 0 0 1 0 6" /><path d="M17.5 6.5a8 8 0 0 1 0 11" /></g></svg>`,
+                        fullscreen1:`<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M9.5 4.5H4.5v5L6.7 7.3l2.8 2.8 1.4-1.4-2.8-2.8z"/><path d="M14.5 4.5h5v5l-2.2-2.2-2.8 2.8-1.4-1.4 2.8-2.8z"/><path d="M4.5 14.5v5h5l-2.2-2.2 2.8-2.8-1.4-1.4-2.8 2.8z"/><path d="M19.5 14.5v5h-5l2.2-2.2-2.8-2.8 1.4-1.4 2.8 2.8z"/></svg>`,
+                        fullscreen2:`<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="scratch-fullscreen-exit-icon"><path d="M10 5v5H5l2.2-2.2-3.3-3.3 1.4-1.4 3.3 3.3z" /><path d="M14 5v5h5l-2.2-2.2 3.3-3.3-1.4-1.4-3.3 3.3z" /><path d="M10 19v-5H5l2.2 2.2-3.3 3.3 1.4 1.4 3.3-3.3z" /><path d="M14 19v-5h5l-2.2 2.2 3.3 3.3-1.4 1.4-3.3-3.3z" /></svg>`,
+                        trashbox_red:`<svg viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="12" fill="#FF3B30" /><g stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M10.5 7V6a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1" /><path d="M7 7h10" /><path d="M8 7l0.7 9.5a1.5 1.5 0 0 0 1.5 1.5h3.6a1.5 1.5 0 0 0 1.5-1.5L16 7" /><path d="M10.5 10.5v4M13.5 10.5v4" /></g></svg>`,
+                    }
+                    const size=this.getAttribute("s")
+                    const mirror=this.getAttribute("mirror")!==null
+                    const childstyle=this.getAttribute("childstyle")??""
+                    const template=this.getAttribute("template")
+                    const template_res=template_ts[template]??""
+                    const add=(function(){
+                        if (!isNaN(Number(size))){
+                            return "px"
+                        }else{
+                            return ""
+                        }
+                    })()
+                    this.innerHTML=`<span style="padding-left:${size}${add};padding-right:${mirror?size:0}${mirror?add:"px"};${childstyle}" class="HTMLSpaceElement_node">${this.innerHTML}${template_res}</span>`
+                }
+            }
+            customElements.define("sp-e",HTMLSpaceElement)
+
+            const g=_=>document.getElementById(_)
+            const gc=_=>document.getElementsByClassName(_)
+            const timer={
+                alltop:g("timer_alltop"),
+                top:g("timer_top"),
+                hour:g("timer_hour"),
+                min:g("timer_minute"),
+                sec:g("timer_second"),
+                hourMin:g("hour_min_join"), //HH:MMの:部分
+                minSec:g("min_sec_join"), //MM:SSの:部分
+                setting_render:g("setting_timelimit_print"), //設定からも残り時間が見えるようにするため
+            }
+            const cf={
+                active:0, //0:auto(実行時に決める) 1:なし 2:ms 3:hms
+                hour:0,
+                min:0,
+                sec:0,
+                volume:0.5,
+                prealarm_volume:0.5,
+                timerScore:0, //timerScore=hour*3600+min*60+sec
+                timerStop:0,
+                usesoundcode:"s1",
+                usepresoundcode:"p1",
+                repeattime_s:60,
+                timersize:1,
+                item_maxmin:{h:[0,9999],m:[0,59],s:[0,59]},
+                prealarm_sec:[],
+                countdown_sec:[1,6,1], //[start,stop,step]。range([1,6,1])->[1,2,3,4,5]
+                countdownSoundActive:true, //5秒前カウントダウンがアクティブか(まだ使ってない)
+            }
+            const maincache={
+                start:0,
+                sub:0,
+                firststart:true, //リセットしてから一番最初の開始:true else:false
+                stoped:true, // 止まっている/アラート音がなっている(タイマー自体が止まっている):true else:false
+                finished:true, //タイマーを停止した(アラート音を止めた):true else:false
+                ractive:3, //テスト用(cf.activeの「描画状況」を示す)
+                cdnotplayed:range(...cf.countdown_sec), //まだカウントダウン音源を鳴らしていない音
+                panotplayed:structuredClone(cf.prealarm_sec), //Pre-Alarmをまだ鳴らしていない音
+                soundLoaded:false, //サウンドの読み込みが終わったらtrueに(リセットしない。一番最初のIFEEでのみ動かす。)
+            }
+            function maincacheReset(){
+                maincache.start=0
+                maincache.sub=0
+                maincache.firststart=true
+                maincache.stoped=true
+                maincache.finished=true
+                maincache.ractive=3
+                maincache.cdnotplayed=range(...cf.countdown_sec)
+                maincache.panotplayed=structuredClone(cf.prealarm_sec)
+            }
+            function cdreset(){
+                maincache.cdnotplayed=range(...cf.countdown_sec)
+                maincache.panotplayed=structuredClone(cf.prealarm_sec)
+            }
+            function limupdate(){
+                const lim=cf.item_maxmin
+                const el=[...setel.timelimit.timelimit]
+                const key=["h","m","s"]
+                for (let i=0;i<3;i++){
+                    const e=el[i]
+                    const l=lim[key[i]]
+                    e.min=l[0]
+                    e.max=l[1]+1
+                }
+            }
+            function toTimerActive2(repl=true){
+                timer.hourMin.style.display="none"
+                timer.hour.style.display="none"
+                timer.top.classList.remove("active3")
+                timer.top.classList.add("active2")
+                if(repl)cf.active=2
+                maincache.ractive=2
+                cf.item_maxmin={h:[0,0],m:[0,9999],s:[0,59]}
+                limupdate()
+            }
+            function toTimerActive3(repl=true){
+                timer.hourMin.style.display=""
+                timer.hour.style.display=""
+                timer.top.classList.remove("active2")
+                timer.top.classList.add("active3")
+                if(repl)cf.active=3
+                maincache.ractive=3
+                cf.item_maxmin={h:[0,9999],m:[0,59],s:[0,59]}
+                limupdate()
+            }
+            async function timer_finish(){
+                const audio=sounds[cf.usesoundcode]
+                const startTime=performance.now()
+                await new Promise(async r=>{
+                    for (let i=0;i<65536;i++){
+                        let played=false
+                        playsound(audio).then(()=>{played=true})
+
+                        await new Promise(r2=>{
+                            const stop=setInterval(()=>{
+                                if (maincache.finished||played||((performance.now()-startTime)/1000>cf.repeattime_s)){
+                                    stopsound(audio)
+                                    clearInterval(stop)
+                                    r2()
+                                }
+                            },200)
+                        })
+                        if (!played||maincache.finished){
+                            stopsound(audio)
+                            break
+                        }
+                    }
+                    r()
+                })
+                //console.log("end",(performance.now()-startTime)/1000)
+            }
+            function timer_render(Score,renderMode,activer){
+                const e=timer.top
+                const r=renderMode??(function(){
+                    if (e.classList.contains("lastlen2")){
+                        return 2
+                    }else if (e.classList.contains("lastlen3")){
+                        return 3
+                    }else if (e.classList.contains("lastlen4")){
+                        return 4
+                    }
+                })()//render Mode
+                const active=activer||(function(){
+                    if (cf.active===0||activer===0){
+                        if (Math.floor(Score/3600)===0){
+                            toTimerActive2(false)
+                            return 2
+                        }else{
+                            toTimerActive3(false)
+                            return 3
+                        }
+                    }else{
+                        return cf.active
+                    }
+                })()
+                const all=(function(){
+                    if (Score!=undefined){
+                        if (active===2){
+                            return [0,Math.floor(Score/60),Score%60]
+                        }else if (active===3){
+                            return [Math.floor(Score/3600),Math.floor(Score%3600/60),Score%60]
+                        }
+                    }else{
+                        return [cf.hour,cf.min,cf.sec]
+                    }
+                })()
+                const [h,m,s]=all.map(String)
+
+                timer.sec.textContent=s.padStart(2,0)
+                timer.min.textContent=m.padStart(((active===2)?r:2),0)
+                timer.hour.textContent=h.padStart(((active===3)?r:2),0)
+                timer.setting_render.textContent="残り時間: "+timer.hour.textContent+":"+timer.min.textContent+":"+timer.sec.textContent
+                return (h==="0"?"":(timer.hour.textContent+":"))+timer.min.textContent+":"+timer.sec.textContent
+            }
+            function timer_renderchange(){
+                let tg=0
+                let active=cf.active
+                if (cf.active===0){
+                    if (cf.hour===0){
+                        tg=cf.min+cf.hour*60
+                        toTimerActive2(false)
+                        active=2
+                        maincache.ractive=2
+                    }else{
+                        tg=cf.hour
+                        toTimerActive3(false)
+                        active=3
+                        maincache.ractive=3
+                    }
+                }else if (cf.active===2){
+                    tg=cf.min+cf.hour*60
+                    active=2
+                    maincache.ractive=2
+                }else if (cf.active===3){
+                    tg=cf.hour
+                    active=3
+                    maincache.ractive=3
+                }
+                const tgs=String(tg)
+                let rendermode;
+                timer.top.classList.remove("lastlen2","lastlen3","lastlen4")
+                if (tgs.length===1||tgs.length===2){
+                    timer.top.classList.add("lastlen2")
+                    rendermode=2
+                }else if (tgs.length===3){
+                    timer.top.classList.add("lastlen3")
+                    rendermode=3
+                }else if (tgs.length===4){
+                    timer.top.classList.add("lastlen4")    
+                    rendermode=4
+                }
+                return [rendermode,active]
+            }
+            function timer_cdsound(time){
+                const t=Math.round(time)
+                if (cf.countdownSoundActive&&maincache.cdnotplayed.includes(t)){
+                    maincache.cdnotplayed.splice(maincache.cdnotplayed.indexOf(t),1)
+                    playsound(sounds.countdown1)
+                }
+                if (maincache.panotplayed.includes(t)){
+                    maincache.panotplayed.splice(maincache.panotplayed.indexOf(t),1)
+                    playsound(sounds[cf.usepresoundcode])
+                }
+            }
+            function timer_main_titlesys(re){
+                if (titlechange_writetext!==re){
+                    titlechange(re)
+                }
+            }
+            async function timer_main(){
+                timer.top.style.opacity=1
+            
+                const e=timer.top
+                const r=(function(){
+                    if (e.classList.contains("lastlen2")){
+                        return 2
+                    }else if (e.classList.contains("lastlen3")){
+                        return 3
+                    }else if (e.classList.contains("lastlen4")){
+                        return 4
+                    }
+                })()//render Mode
+                const active=(function(){
+                    console.log(cf.active,cf.hour)
+                    if (cf.active===0){
+                        if (cf.hour==="0"||cf.hour===0){
+                            toTimerActive2(false)
+                            return 2
+                        }else{
+                            toTimerActive3(false)
+                            return 3
+                        }
+                    }else{
+                        return cf.active
+                    }
+                })()
+                cf.timerScore=cf.hour*3600+cf.min*60+cf.sec
+                if (maincache.firststart){
+                    maincache.start=performance.now()
+                    maincache.firststart=false
+                }else{
+                    maincache.start=performance.now()-maincache.sub
+                }
+                maincache.stoped=false
+                maincache.finished=false
+                let lastscore
+                cf.timerStop=setInterval(()=>{
+                    const score=cf.timerScore-((performance.now()-maincache.start)/1000)
+                    lastscore=score
+                    //console.log(score,performance.now(),maincache.start,maincache.sub)
+                    const re=timer_render(Math.round(score),r,active)
+                    timer_main_titlesys(re)
+                    timer_cdsound(score)
+                    if (score<=0||maincache.stoped){
+                        maincache.stoped=true
+                        timer_render(0,r,active)
+                        clearInterval(cf.timerStop)
+                    }
+                },100)
+                await new Promise(r=>{
+                    const stop=setInterval(()=>{
+                        if (maincache.stoped){
+                            clearInterval(stop)
+                            r()
+                        }
+                    },100)
+                })
+                if (lastscore==undefined){return}
+                maincache.sub=(cf.timerScore-lastscore)*1000
+                //console.log("maincache sub:",maincache.sub)
+                if (lastscore<=0.1){
+                    timer_render(0,r,false)
+                    await timer_finish()
+                    maincache.finished=true
+                }else{
+                    timer.top.style.opacity=0.5
+                }
+            }
+            function timer_main_boot(bootmode=false){
+                let bootbad
+                if (bootmode){
+                    const elm=[...setel.timelimit.timelimit]
+                    const lim=[...setel.timelimit.timelimit].map(x=>Number(x.value))
+                    const col={ok:"green",ng:"red"}
+                    const key=["h","m","s"]
+                    const log=[]
+                    if (cf.active===0){
+                        if (lim[0]===0){
+                            toTimerActive2(false)
+                        }else{
+                            toTimerActive3(false)
+                        }
+                    }
+                    for (let i=0;i<3;i++){
+                        const el=elm[i]
+                        const inp=lim[i]
+                        const limit=cf.item_maxmin[key[i]]
+                        if (limit[0]<=inp&&inp<=limit[1]){
+                            el.style.borderColor=col.ok
+                            log.push(true)
+                        }else{
+                            el.style.borderColor=col.ng
+                            log.push(false)
+                        }
+                    }
+                    if (log.some(x=>x===false))bootbad=true
+                    else{
+                        cf.hour=lim[0]
+                        cf.min=lim[1]
+                        cf.sec=lim[2]
+                    }
+                }
+                maincacheReset()
+                if (bootbad)return false
+                timer.top.style.opacity=1
+                const [rendermode,active]=timer_renderchange()
+                timer_render(cf.hour*3600+cf.min*60+cf.sec,rendermode,active)
+            }
+
+            const menuel={
+                start:g("start"),
+                stop:g("stop"),
+                reset:g("reset"),
+                setting:g("to_setting"),
+                home:g("to_home"),
+                powerwash:g("powerwash"),
+                about:g("about"),
+                toabout:g("to_about"),
+                log:g("log"),
+                tolog:g("to_log"),
+                logreturn:g("log_return"),
+                fullscreen:g("fullscreenChange"),
+                to_fs:g("toFullscreen"),
+                exit_fs:g("exitFullscreen"),
+                miniquickmenu:g("miniquickmenu"),
+                miniquickmenuMain:g("miniquickmenu_main"),
+            }
+            const setel={
+                main:g("setting"),
+                timerview:g("setting_timerview"),
+                timelimit:g("setting_timelimit"),
+                timelimit_h:g("setting_timelimit_h"),
+                timelimit_m:g("setting_timelimit_m"),
+                timelimit_s:g("setting_timelimit_s"),
+                soundmain:g("setting_sound"),
+                soundvolumeprint:g("setting_soundvolume_print"),
+                repeattime:g("setting_repeattime"),
+                repeattime_print:g("setting_repeattime_print"),
+                quickmenu:g("setting_quickmenu"),
+                quickmenu_01:[...gc("qm1")],
+                quickmenu_02:[...gc("qm2")],
+                timersize:g("setting_timersize"),
+                timersize_print:g("setting_timersize_print"),
+                timersize_reset:g("setting_timersize_reset"),
+                prealarm:g("setting_prealarm"),
+                prealarmvolumeprint:g("setting_prealarm_soundvolume_print"),
+                prealarmtimingprint:g("setting_prealarm_timing_print"),
+                pretiming_h:g("setting_prealarm_timing_h"),
+                pretiming_m:g("setting_prealarm_timing_m"),
+                pretiming_s:g("setting_prealarm_timing_s"),
+                pretiming_push:g("setting_prealarm_timing_p"),
+                countdown:g("setting_countdown"),
+                advancedmenu:g("setting_advancedmenu"),
+            }
+            function pretimingpush(txt,func="",outelm=setel.prealarmtimingprint){
+                const outel=outelm||setel.prealarmtimingprint
+                const el=document.createElement("div")
+                el.style.fontSize="20px"
+                el.style.alignItems="center"
+                el.style.display="flex"
+                el.style.flexWrap="wrap"
+                el.style.paddingLeft="16px"
+                el.style.paddingTop="4px"
+                const el_s=document.createElement("span")
+                el_s.textContent=txt
+                el_s.style.fontSize="20px"
+                const el_d=document.createElement("sp-e")
+                el_d.setAttribute("template","trashbox_red")
+                el_d.setAttribute("childstyle","display:flex;align-items:center;")
+                el_d.setAttribute("s",8)
+                el_d.classList.add("el_gr_01_child")
+                const el_b=document.createElement("button")
+                el_b.setAttribute("onclick",`this.parentElement.remove();${func}`)
+                el_b.setAttribute("title","設定項目を削除")
+                el_b.classList.add("el_gr_01")
+                
+                el_b.append(el_d)
+                el.append(el_s,el_b)
+                outel.append(el)
+                el_d.blur()
+                el_b.blur()
+                el_s.blur()
+                el.blur()
+            }
+            function prealarmlistwrite(sec){
+                const h=Math.trunc(sec/3600).toString().padStart(2,"0")
+                const m=Math.trunc(sec%3600/60).toString().padStart(2,"0")
+                const s=Math.trunc(sec%60).toString().padStart(2,"0")
+                const t=`${h}:${m}:${s}`
+                pretimingpush(t,"cf.prealarm_sec.splice(cf.prealarm_sec.indexOf("+sec+"),1)")
+            }
+            menuel.start.addEventListener("click",e=>{
+                menuel.start.disabled=true
+                menuel.stop.disabled=false
+                timer_main()
+            })
+            menuel.stop.addEventListener("click",e=>{
+                menuel.start.disabled=false
+                menuel.stop.disabled=true
+                maincache.stoped=true
+                clearInterval(cf.timerStop)
+                cdreset()
+                if (maincache.stoped&&!maincache.finished){
+                    maincache.finished=true
+                }
+            })
+            menuel.reset.addEventListener("click",e=>{
+                timer_main_boot()
+            })
+            menuel.setting.addEventListener("click",e=>{
+                setel.main.showModal()
+            })
+            menuel.home.addEventListener("click",e=>{
+                setel.main.close()
+            })
+            menuel.powerwash.addEventListener("click",async e=>{
+                if (confirm("全保存データを削除し、初期化しますか?初期化すると、この「設定」から設定されたデータ(サウンド、タイマー表示、制限時間、アラート継続時間など)が全て消去されます。初期化後は、再登録が必要となります。\n\n本当に、初期化しますか?")){
+                    try{
+                        clearInterval(autosave_stop)
+                        g("powerwash_screen").showModal()
+                        g("powerwash_screen_rorateElement").dispatchEvent(new Event("change"))
+                        await new Promise(r=>setTimeout(r,12000)) //autosaveが5秒ごとのため、5秒+aは待つこと。
+                        localStorage.removeItem("/timer/v1/mainsave/cf")
+                        alert("データ削除が完了しました。初期化内容反映のため、再読み込みが行われます。")
+                        location.reload()
+                    }catch(e){
+                        alert("データ削除に失敗しました。")
+                    }
+                }
+            })
+            menuel.toabout.addEventListener("click",e=>{
+                menuel.about.showModal()
+            })
+            menuel.about.addEventListener("click",e=>{
+                if (e.target===menuel.about){
+                    menuel.about.close()
+                }
+            })
+            menuel.tolog.addEventListener("click",e=>{
+                menuel.log.showModal()
+            })
+            menuel.log.addEventListener("click",e=>{
+                if (e.target===menuel.log){
+                    menuel.log.close()
+                }
+            })
+            menuel.logreturn.addEventListener("click",e=>{
+                menuel.log.close()
+            })
+            menuel.fullscreen.addEventListener("click",e=>{
+                if (document.fullscreenElement){
+                    document.exitFullscreen()
+                }else{
+                    timer.alltop.requestFullscreen()
+                }
+            })
+            document.addEventListener("fullscreenchange",e=>{
+                if (document.fullscreenElement){
+                    menuel.to_fs.style.display="none"
+                    menuel.exit_fs.style.display="block"
+                }else{
+                    menuel.to_fs.style.display="block"
+                    menuel.exit_fs.style.display="none"
+                }
+            })
+            menuel.miniquickmenu.addEventListener("click",e=>{
+                //[...gc("miniquick")].forEach(el=>el.style.display=el.style.display==="none"?"inline-block":"none")
+                menuel.miniquickmenuMain.style.display=menuel.miniquickmenuMain.style.display==="none"?"inline-block":"none"
+            })
+            setel.main.addEventListener("click",e=>{
+                if (e.target===setel.main){
+                    setel.main.close()
+                }
+            })
+            setel.timerview.addEventListener("change",e=>{
+                const mode=setel.timerview.timerview.value
+                //console.log("change!")
+                if (mode==="auto"){
+                    cf.active=0
+                }else if (mode==="hms"){
+                    toTimerActive3()
+                }else if (mode==="ms"){
+                    toTimerActive2()
+                }
+                limupdate()
+                timer_main_boot(true)
+                backup()
+            })
+            setel.timelimit_h.addEventListener("input",e=>{
+                e.target.value=Number(e.target.value)
+                timer_main_boot(true)
+            })
+            setel.timelimit_m.addEventListener("input",e=>{
+                e.target.value=Number(e.target.value)
+                timer_main_boot(true)
+            })
+            setel.timelimit_s.addEventListener("input",e=>{
+                e.target.value=Number(e.target.value)
+                timer_main_boot(true)
+            })
+            function template_lim(h,m,s,add=false){
+                const H=setel.timelimit_h
+                const M=setel.timelimit_m
+                const S=setel.timelimit_s
+                H.value=(add?(Number(H.value)+h):h)
+                M.value=(add?(Number(M.value)+m):m)
+                S.value=(add?(Number(S.value)+s):s)
+                if (/*maincache.stoped*/false){//ただの名残。旧バージョンではtimeLimitArrangeや周辺が弱かったため分けていたが今は周辺が発達している為いらない。
+                    timeLimitArrange(true)
+                }else{
+                    const h2=Number(H.value)
+                    const m2=Number(M.value)
+                    const s2=Number(S.value)
+                    if (h2*3600+m2*60+s2<0){
+                        template_lim(0,0,0)
+                        return
+                    }
+                    cdreset()
+                    cf.timerScore=cf.hour*3600+cf.min*60+cf.sec
+                    timeLimitArrange()
+                    if (maincache.stoped){
+                        if (!timer_main_boot(true)){
+                            return
+                        }
+                    }
+                    cf.hour=h2
+                    cf.min=m2
+                    cf.sec=s2
+                    if (maincache.stoped){
+                        timer_renderchange()
+                        limupdate()
+                    }
+                }
+            }
+            function timeLimitArrange(render=true){
+                const he=setel.timelimit_h
+                const me=setel.timelimit_m
+                const se=setel.timelimit_s
+                const h=Number(he.value)
+                const m=Number(me.value)
+                const s=Number(se.value)
+                const score=h*3600+m*60+s
+                if (cf.active===3){
+                    he.value=Math.floor(score/3600)
+                    me.value=Math.floor(score%3600/60)
+                    se.value=score%60
+                }else if (cf.active===2){
+                    he.value=0
+                    me.value=Math.floor(score/60)
+                    se.value=score%60
+                }else if (cf.active===0){
+                    if (h===0){
+                        he.value=0
+                        me.value=Math.floor(score/60)
+                        se.value=score%60
+                    }else{
+                        he.value=Math.floor(score/3600)
+                        me.value=Math.floor(score%3600/60)
+                        se.value=score%60
+                    }
+                }
+                if (render){
+                    timer_main_boot(true)
+                    backup()
+                }
+            }
+            setel.soundmain.addEventListener("input",e=>{
+                if (e.target.name==="soundvolume"){
+                    //音量調整
+                    cf.volume=Number(e.target.value)
+                    setel.soundvolumeprint.textContent="現在の設定値: "+Math.floor(e.target.value*100)+"%"
+                    sounds_k.forEach(name=>{if(name.startsWith("s")){volumechange(sounds[name])}})
+                    backup()
+                }else if (e.target.name==="soundselect"){
+                    //サウンド決定処理
+                    cf.usesoundcode=e.target.value
+                    backup()
+                }
+            })
+            setel.repeattime.addEventListener("input",e=>{
+                cf.repeattime_s=Number(e.target.value)*60
+                setel.repeattime_print.textContent="現在の設定値: "+e.target.value+"分"
+                backup()
+            })
+            setel.timersize.addEventListener("input",e=>{
+                cf.timersize=Number(e.target.value)
+                setel.timersize_print.textContent="現在の設定値: "+Math.round(cf.timersize*100)+"%"
+                timer.top.style.zoom=cf.timersize
+            })
+            setel.timersize_reset.addEventListener("click",e=>{
+                cf.timersize=1
+                setel.timersize_print.textContent="現在の設定値: 100%"
+                setel.timersize.timersize.value=1
+                timer.top.style.zoom=1
+            })
+            setel.prealarm.addEventListener("input",e=>{
+                if (e.target.name==="soundvolume"){
+                    //音量調整
+                    cf.prealarm_volume=Number(e.target.value)
+                    setel.prealarmvolumeprint.textContent="現在の設定値: "+Math.floor(e.target.value*100)+"%"
+                    sounds_k.forEach(name=>{if(name.startsWith("p")){volumechange(sounds[name],cf.prealarm_volume)}})
+                    backup()
+                }else if (e.target.name==="soundselect"){
+                    //サウンド決定処理
+                    cf.usepresoundcode=e.target.value
+                    backup()
+                }
+            })
+            function pretiminginput(){
+                const he=setel.pretiming_h
+                const me=setel.pretiming_m
+                const se=setel.pretiming_s
+                const hv=Math.trunc(Number(he.value))
+                const mv=Math.trunc(Number(me.value))
+                const sv=Math.trunc(Number(se.value))
+                const sc=hv*3600+mv*60+sv
+                he.value=Math.max(0,Math.trunc(sc/3600))
+                me.value=Math.max(0,Math.trunc(sc%3600/60))
+                se.value=Math.max(0,sc%60)
+            }
+            setel.pretiming_h.addEventListener("input",e=>{
+                pretiminginput()
+            })
+            setel.pretiming_h.addEventListener("keydown",e=>{
+                if (e.key==="Enter"){
+                    e.preventDefault()
+                    if (!setel.pretiming_push.disabled){
+                        setel.pretiming_push.dispatchEvent(new Event("click"))
+                    }
+                }
+            })
+            setel.pretiming_m.addEventListener("input",e=>{
+                pretiminginput()
+            })
+            setel.pretiming_m.addEventListener("keydown",e=>{
+                if (e.key==="Enter"){
+                    e.preventDefault()
+                    if (!setel.pretiming_push.disabled){
+                        setel.pretiming_push.dispatchEvent(new Event("click"))
+                    }
+                }
+            })
+            setel.pretiming_s.addEventListener("input",e=>{
+                pretiminginput()
+            })
+            setel.pretiming_s.addEventListener("keydown",e=>{
+                if (e.key==="Enter"){
+                    e.preventDefault()
+                    if (!setel.pretiming_push.disabled){
+                        setel.pretiming_push.dispatchEvent(new Event("click"))
+                    }
+                }
+            })
+            setel.pretiming_push.addEventListener("click",e=>{
+                const score=Number(setel.pretiming_h.value)*3600+Number(setel.pretiming_m.value)*60+Number(setel.pretiming_s.value)
+                if (!cf.prealarm_sec.includes(score)){
+                    cf.prealarm_sec.push(score)
+                    prealarmlistwrite(score)
+                    cdreset()
+                }
+            })
+            setel.countdown.addEventListener("input",e=>{
+                if (e.target.name==="cdactive"){
+                    cf.countdownSoundActive=!!Number(e.target.value)
+                }else if (e.target.name==="startTiming"){
+                    const v=Number(e.target.value)
+                    if (Number.isInteger(v)){
+                        e.target.style.borderColor="green"
+                        cf.countdown_sec=[1,v+1,1]
+                    }else{
+                        e.target.style.borderColor="red"
+                    }
+                }
+            })
+            setel.advancedmenu.adv_date_submit.addEventListener("click",e=>{
+                const ve=setel.advancedmenu.adv_date
+                e.target.disabled=true
+                ve.disabled=true
+                const vd=new Date(ve.value)
+                const d=new Date()
+                const vdms=vd.getTime()
+                const dms=d.getTime()
+                if (vdms-dms<=10000||isNaN(vdms)){
+                    ve.style.borderColor="red"
+                }else{
+                    ve.style.borderColor="green"
+                    const sec=(vdms-dms)/1000
+                    const h=Math.trunc(sec/3600)
+                    const m=Math.trunc(sec%3600/60)
+                    const s=Math.trunc(sec%60)
+                    template_lim(h,m,s,false)
+                }
+                setTimeout(()=>{
+                    e.target.disabled=false
+                    ve.disabled=false
+                },500)
+            })
+            function backup(){
+                localStorage.setItem("/timer/v1/mainsave/rendering_active",maincache.ractive)
+                localStorage.setItem("/timer/v1/mainsave/cf",JSON.stringify(cf,0,0))
+            }
+            function buttonsys(){
+                if (maincache.soundLoaded){
+                    if (maincache.finished){
+                        menuel.start.disabled=false
+                        menuel.reset.disabled=false
+                        menuel.stop.disabled=true
+                    }else{
+                        menuel.start.disabled=true
+                        menuel.reset.disabled=true
+                        menuel.stop.disabled=false
+                    }
+                }else{
+                    menuel.start.disabled=true
+                    menuel.reset.disabled=true
+                    menuel.stop.disabled=true
+                }
+                if (timer.top.textContent==="00:00:00"||timer.top.textContent==="000:00:00"||timer.top.textContent==="0000:00:00"){
+                    menuel.start.disabled=true
+                }
+                if (maincache.firststart){
+                    if (menuel.start.textContent!=="開始"){
+                        menuel.start.textContent="開始"
+                    }
+                    menuel.reset.disabled=true
+                }else{
+                    if (menuel.start.textContent!=="再開"){
+                        menuel.start.textContent="再開"
+                    }
+                }
+                if (maincache.stoped){
+                    setel.timelimit_h.disabled=false
+                    setel.timelimit_m.disabled=false
+                    setel.timelimit_s.disabled=false
+                    setel.quickmenu_01.forEach(el=>{if(el.getAttribute("enableAuto")!=null)el.disabled=false})
+                    setel.timerview.timerview.forEach(el=>el.disabled=false)
+                    setel.prealarm.soundselect.forEach(el=>el.disabled=false)
+                    setel.pretiming_push.disabled=false
+                    setel.countdown.cdactive.forEach(el=>el.disabled=false)
+                    setel.countdown.startTiming.disabled=false
+                }else{
+                    setel.timelimit_h.disabled=true
+                    setel.timelimit_m.disabled=true
+                    setel.timelimit_s.disabled=true
+                    setel.quickmenu_01.forEach(el=>{if(el.getAttribute("enableAuto")!=null)el.disabled=true})
+                    setel.timerview.timerview.forEach(el=>el.disabled=true)
+                    setel.prealarm.soundselect.forEach(el=>el.disabled=true)
+                    setel.pretiming_push.disabled=true
+                    setel.countdown.cdactive.forEach(el=>el.disabled=true)
+                    setel.countdown.startTiming.disabled=true
+                }
+                if (document.fullscreenEnabled){
+                    menuel.fullscreen.style.display="auto"
+                }else{
+                    menuel.fullscreen.style.display="none"
+                }
+            }
+            buttonsys()
+            const autosave_stop=setInterval(backup,5000)
+            const buttonsys_stop=setInterval(buttonsys,100)
+
+            window.soundsOfflinePackage=window.soundsOfflinePackage||{}
+            soundsOfflinePackage.countdown1="data:audio/wav;base64,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";
+            !async function(){
+                clockSoundLoad().then(ev=>maincache.soundLoaded=true)//Async関数だけど非同期で処理を回す
+                const c=JSON.parse(localStorage.getItem("/timer/v1/mainsave/cf"))
+                if (!c)return;
+
+                setel.timerview.timerview.value=(function(){
+                    const m=c.active
+                    if(m===0)return"auto"
+                    if(m===1)return"ignore"
+                    if(m===2)return"ms"
+                    if(m===3)return"hms"
+                })()
+                setel.timerview.dispatchEvent(new Event("change"))
+                if (c.active){
+                    cf.active=c.active
+                }
+                if (c.hour){
+                    cf.hour=c.hour
+                    setel.timelimit_h.value=c.hour
+                }
+                if (c.min){
+                    cf.min=c.min
+                    setel.timelimit_m.value=c.min
+                }
+                if (c.sec){
+                    cf.sec=c.sec
+                    setel.timelimit_s.value=c.sec
+                }
+                if (c.volume){
+                    cf.volume=c.volume
+                    setel.soundmain.soundvolume.value=c.volume
+                    setel.soundvolumeprint.textContent="現在の設定値: "+Math.floor(c.volume*100)+"%"
+                    sounds_k.forEach(name=>{if(name.startsWith("s")){volumechange(sounds[name])}})
+                }
+                if (c.prealarm_volume){
+                    cf.prealarm_volume=c.prealarm_volume
+                    setel.prealarm.soundvolume.value=c.prealarm_volume
+                    setel.prealarmvolumeprint.textContent="現在の設定値: "+Math.floor(c.prealarm_volume*100)+"%"
+                    sounds_k.forEach(name=>{if(name.startsWith("p")){volumechange(sounds[name],c.prealarm_volume)}})
+                }
+                if (c.timerScore){
+                    cf.timerScore=c.timerScore
+                }
+                if (c.timerStop){
+                    cf.timerStop=c.timerStop
+                }
+                if (c.repeattime_s){
+                    cf.repeattime_s=c.repeattime_s
+                    setel.repeattime.repeattime.value=(cf.repeattime_s/60).toFixed(1)
+                    setel.repeattime_print.textContent="現在の設定値: "+(cf.repeattime_s/60).toFixed(1)+"分"
+                }
+                if (c.timersize){
+                    cf.timersize=c.timersize
+                    setel.timersize.timersize.value=c.timersize
+                    setel.timersize_print.textContent="現在の設定値: "+Math.round(cf.timersize*100)+"%"
+                    timer.top.style.zoom=cf.timersize
+                }
+                if (c.usesoundcode){
+                    cf.usesoundcode=c.usesoundcode
+                    setel.soundmain.soundselect.value=c.usesoundcode
+                }
+                if (c.usepresoundcode){
+                    cf.usepresoundcode=c.usepresoundcode
+                    setel.prealarm.soundselect.value=c.usepresoundcode
+                }
+                if (c.item_maxmin){
+                    cf.item_maxmin=c.item_maxmin
+                }
+                if (c.prealarm_sec){
+                    cf.prealarm_sec=c.prealarm_sec
+                    c.prealarm_sec.forEach(prealarmlistwrite)
+                }
+                if (c.countdown_sec){
+                    cf.countdown_sec=c.countdown_sec
+                    setel.countdown.startTiming.value=c.countdown_sec[1]-1
+                }
+                if (c.countdownSoundActive){
+                    cf.countdownSoundActive=c.countdownSoundActive
+                }
+                
+                setel.timerview.dispatchEvent(new Event("change"))
+                timer_main_boot()
+                buttonsys()
+            }()
+            !function(){
+                const pa=new URLSearchParams(location.search)
+                const re={
+                    hour:pa.get("h")??(pa.get("hour")),
+                    min:pa.get("m")??(pa.get("min")??(pa.get("minute"))),
+                    sec:pa.get("s")??(pa.get("sec")??(pa.get("second"))),
+                }
+                if (re.hour!==null||re.min!==null||re.sec!==null){
+                    console.log(Number(re.hour)??0,Number(re.min)??0,Number(re.sec)??0)
+                    template_lim(Number(re.hour)??0,Number(re.min)??0,Number(re.sec)??0)
+                }
+            }()
+        </script>
+    </body>
+</html>

@@ -4,7 +4,7 @@
         <meta charset=utf-8>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="色々な機能が備わったWebタイマーです。">
-        <title>Online Digital Timer v1.13.0</title>
+        <title>Online Digital Timer v1.13.1</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -466,7 +466,7 @@
                 <div id="about_top" class="maindialog">
                     <p>About - Online Digital Timer</p>
                     <p> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </p>
-                    <p>Online Digital Timer v1.13.0</p>
+                    <p>Online Digital Timer v1.13.1</p>
                     <details>
                         <summary>公式公開URL</summary>
                         <p><a href="https://ks-seed0310.github.io/timer1/timer1/latest.html" rel="noopener noreferer" target="_blank">https://ks-seed0310.github.io/timer1/timer1/latest.html</a></p>
@@ -700,6 +700,15 @@
                                     </ul>
                                 </details>
                             </li>
+                            <li>
+                                <details>
+                                    <summary>v1.13.1</summary>
+                                    <p>v1.13.0公開から30分という異例の時間でのアップデート</p>
+                                    <ul>
+                                        <li><p>バグ発見に付き緊急アップデート</p></li>
+                                    </ul>
+                                </details>
+                            </li>
                         </ul>
                     </details>
                     <p> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </p>
@@ -760,7 +769,7 @@
         <script>
             //最初の方にタイマー非依存処理を書いておく。
             const constant={
-                title:"Online Digital Timer v1.13.0",
+                title:"Online Digital Timer v1.13.1",
                 titlechange_add2_ts:{
                     none:["",""],
                     ltgt:["<",">"],
@@ -1548,8 +1557,8 @@
                         return
                     }
                     cdreset()
-                    cf.timerScore=cf.hour*3600+cf.min*60+cf.sec
-                    timeLimitArrange()
+                    cf.timerScore=h2*3600+m2*60+s2
+                    timeLimitArrange(false)
                     if (maincache.stoped){
                         if (!timer_main_boot(true)){
                             return

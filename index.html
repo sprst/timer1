@@ -4,7 +4,7 @@
         <meta charset=utf-8>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="色々な機能が備わったWebタイマーです。">
-        <title>Online Digital Timer v1.12.0</title>
+        <title>Online Digital Timer v1.13.0</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -227,6 +227,9 @@
                 overflow-wrap:break-word;
                 word-break:break-all;
             }
+            a{
+                color:#1478a8
+            }
             #setting_prealarm_timing_print{
                 border: 2px solid #dfe1e5;
                 min-height:220px;
@@ -378,8 +381,8 @@
                             <summary title="タイマーが終了したときのアラート音の継続時間を設定します。">アラート継続時間</summary>
                             <span>分数で指定</span>
                             <form id="setting_repeattime" action="#" onsubmit="event.preventDefault()">
-                                <input type=range min=0.5 max=30 step=0.5 value=1 name="repeattime" style="width:60%;" />
-                                <span id="setting_repeattime_print">現在の設定値: 1分</span>
+                                <input type=range min=0.5 max=60 step=0.5 value=5 name="repeattime" style="width:60%;" />
+                                <span id="setting_repeattime_print">現在の設定値: 5分</span>
                             </form>
                         </details>
                         <details class="settingDetails">
@@ -405,7 +408,7 @@
                                     <span style="font-size:20px;align-items:center;display:flex;flex-wrap:wrap" />
                                         <label><input type="radio" name="soundselect" value="p1" checked />Pre-Alarm1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="sounds.p1.play()" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e><br />
                                         <label><input type="radio" name="soundselect" value="p2" />Pre-Alarm2</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="sounds.p2.play()" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e><br />
-                                </span>
+                                    </span>
                                 </div>
                             </form>
                         </details>
@@ -437,6 +440,8 @@
                             <button class="btnsmall" id="powerwash" title="ブラウザに保存されている全ての保存データを削除します。">データ全消去</button>
                             <button class="btnsmall" id="to_about" title="このプログラムの詳細ページを開きます。">詳細</button>
                             <button class="btnsmall" id="to_log" title="システムログを表示します。">Log</button>
+                            <button class="btnsmall" id="export" title="設定をエクスポートします。">Export</button>
+                            <button class="btnsmall" id="import" title="設定をインポートします。">Import</button>
                         </details>
                         <button class="btn" id="to_home" style="font-size:1rem;" title="タイマーの画面に戻ります。">戻る</button>
                     </div>
@@ -461,7 +466,12 @@
                 <div id="about_top" class="maindialog">
                     <p>About - Online Digital Timer</p>
                     <p> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </p>
-                    <p>Online Digital Timer v1.12.0</p>
+                    <p>Online Digital Timer v1.13.0</p>
+                    <details>
+                        <summary>公式公開URL</summary>
+                        <p><a href="https://ks-seed0310.github.io/timer1/timer1/latest.html" rel="noopener noreferer" target="_blank">https://ks-seed0310.github.io/timer1/timer1/latest.html</a></p>
+                        <p><a href="https://sprst.github.io/timer1/" rel="noopener noreferer" target="_blank">https://sprst.github.io/timer1/</a></p>
+                    </details>
                     <details>
                         <summary>history</summary>
                         <ul>
@@ -672,8 +682,21 @@
                                         <li><p>カウントダウン音声のON/OFF切り替え機能追加</p></li>
                                         <li><p>「発展メニュー」追加(設定内)</p></li>
                                         <li><p>発展メニューに「終了時刻を基準とした制限時間設定」項目を追加</p></li>
-                                        <li><p>URLに時間を埋め込める機能追加(<a href="https://ks-seed0310.github.io/timer1/timer1/wiki/urlparam_embed.html" target="_blank">Wiki</a>)</p></li>
+                                        <li><p>URLに時間を埋め込める機能追加(<a href="https://sprst.github.io/timer1/wiki/urlparam.html" target="_blank">Wiki</a><sp-e s=8></sp-e><a href="https://ks-seed0310.github.io/timer1/timer1/wiki/urlparam_embed.html" target="_blank">Wiki2</a>)</p></li>
                                         <li><p>タイトルから残りの制限時間が分かるように変更</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.13.0</summary>
+                                    <ul>
+                                        <li><p>設定データの書き出し・読み込み機能追加</p></li>
+                                        <li><p>Screen Wake Lock API導入</p></li>
+                                        <li><p>タイマーの動作中のUIを動いていると認識しやすいように修正</p></li>
+                                        <li><p>タイマー終了後の自動カウントアップ追加</p></li>
+                                        <li><p>タイマーの動作中に変更可能な設定と変更不可能な設定を明確に区別するよう修正。<br />(今までサボって書いてなかったため動作中に変更しても反映されないものまで変更できる状態になっていた。)</p></li>
+                                        <li><p>その他バグ修正</p></li>
                                     </ul>
                                 </details>
                             </li>
@@ -689,14 +712,6 @@
                     <p>このプログラムは、CC BY 4.0 Licenseにより公開されています。</p>
                     <p>プログラムの学習に使ったり、このタイマーをベースにして新しいものを作ったり...</p>
                     <p>色々な使い方ができますので楽しんで使ってください！</p>
-                    <p>ただ、そんなクレジットを書かせるほど凄いプログラムでも有りません。</p>
-                    <p>ですので、以下のルールのみお守りいただけると幸いです。</p>
-                    <ul>
-                        <li>一部のコード抜き取りなどはクレジット不必要</li>
-                        <li>全体の抜き取り、このHTMLをベースとした改良の場合はクレジット必要(一番下の方にひっそり置くのでも良いです。見えれば良いです。)</li>
-                    </ul>
-                    <p>詳しくは自分で調べてみましょう！</p>
-                    <p>そんな私が怒ることでもないので何も言いませんが、自分で調べてみることも大切だし、実際のドロドロとした嫌な部分も見れますよ...(求めてない)</p>
                     <details>
                         <summary>勘違い防止のための難しい文章が書いてあるかもしれない独自ルール</summary>
                         <h3>1. クレジット</h3>
@@ -743,8 +758,9 @@
         </div>
         <script src="timer_offline.js"></script>
         <script>
+            //最初の方にタイマー非依存処理を書いておく。
             const constant={
-                title:"Online Digital Timer v1.12.0",
+                title:"Online Digital Timer v1.13.0",
                 titlechange_add2_ts:{
                     none:["",""],
                     ltgt:["<",">"],
@@ -783,7 +799,22 @@
                 logel.print.insertBefore(p,logel.print.firstElementChild)
                 p.innerHTML=`[${t.toLocaleTimeString()}:${t.getMilliseconds()}<sp-e s=4 mirror>:</sp-e>${a}] ${msg}`
             }
+            let wakeLock=null
+            async function reqWakeLock(){
+                try{
+                    wakeLock=await navigator.wakeLock.request()
+                }catch(e){
+                    logadd("WakeLockに失敗しました: ",e)
+                }
+            }
+            function relWakeLock(){
+                if (wakeLock){
+                    wakeLock.release()
+                    wakeLock=null
+                }
+            }
             
+            //タイマーのシステム
             let powerwash_i=0
             async function btnpress(el_or_selector){
                 if ((typeof el_or_selector)==="object"){
@@ -977,6 +1008,24 @@
                 panotplayed:structuredClone(cf.prealarm_sec), //Pre-Alarmをまだ鳴らしていない音
                 soundLoaded:false, //サウンドの読み込みが終わったらtrueに(リセットしない。一番最初のIFEEでのみ動かす。)
             }
+            function cf_reset(){
+                cf.active=0
+                cf.hour=0
+                cf.min=0
+                cf.sec=0
+                cf.volume=0.5
+                cf.prealarm_volume=0.5
+                cf.timerScore=0
+                cf.timerStop=0
+                cf.usesoundcode="s1"
+                cf.usepresoundcode="p1"
+                cf.repeattime_s=300
+                cf.timersize=1
+                cf.item_maxmin={h:[0,9999],m:[0,59],s:[0,59]}
+                cf.prealarm_sec=[]
+                cf.countdown_sec=[1,6,1]
+                cf.countdownSoundActive=true
+            }
             function maincacheReset(){
                 maincache.start=0
                 maincache.sub=0
@@ -1022,9 +1071,10 @@
                 cf.item_maxmin={h:[0,9999],m:[0,59],s:[0,59]}
                 limupdate()
             }
-            async function timer_finish(){
+            async function timer_finish(renderMode,activer){
                 const audio=sounds[cf.usesoundcode]
                 const startTime=performance.now()
+                timer.top.style.opacity=0.2
                 await new Promise(async r=>{
                     for (let i=0;i<65536;i++){
                         let played=false
@@ -1032,12 +1082,14 @@
 
                         await new Promise(r2=>{
                             const stop=setInterval(()=>{
-                                if (maincache.finished||played||((performance.now()-startTime)/1000>cf.repeattime_s)){
+                                const t=(performance.now()-startTime)/1000
+                                timer_render(Math.trunc(t),renderMode,activer,"経過時間")
+                                if (maincache.finished||played||(t>cf.repeattime_s)){
                                     stopsound(audio)
                                     clearInterval(stop)
                                     r2()
                                 }
-                            },200)
+                            },100)
                         })
                         if (!played||maincache.finished){
                             stopsound(audio)
@@ -1046,9 +1098,11 @@
                     }
                     r()
                 })
+                timer.top.style.opacity=1
+                timer_render(0,renderMode,activer)
                 //console.log("end",(performance.now()-startTime)/1000)
             }
-            function timer_render(Score,renderMode,activer){
+            function timer_render(Score,renderMode,activer,settingMinitimerText="残り時間"){
                 const e=timer.top
                 const r=renderMode??(function(){
                     if (e.classList.contains("lastlen2")){
@@ -1088,7 +1142,7 @@
                 timer.sec.textContent=s.padStart(2,0)
                 timer.min.textContent=m.padStart(((active===2)?r:2),0)
                 timer.hour.textContent=h.padStart(((active===3)?r:2),0)
-                timer.setting_render.textContent="残り時間: "+timer.hour.textContent+":"+timer.min.textContent+":"+timer.sec.textContent
+                timer.setting_render.textContent=settingMinitimerText+": "+timer.hour.textContent+":"+timer.min.textContent+":"+timer.sec.textContent
                 return (h==="0"?"":(timer.hour.textContent+":"))+timer.min.textContent+":"+timer.sec.textContent
             }
             function timer_renderchange(){
@@ -1147,6 +1201,7 @@
                 }
             }
             async function timer_main(){
+                reqWakeLock()
                 timer.top.style.opacity=1
             
                 const e=timer.top
@@ -1190,7 +1245,16 @@
                     const re=timer_render(Math.round(score),r,active)
                     timer_main_titlesys(re)
                     timer_cdsound(score)
+                    if (score%1<0.5){
+                        timer.hourMin.style.opacity=0.05
+                        timer.minSec.style.opacity=0.05
+                    }else{
+                        timer.hourMin.style.opacity=1
+                        timer.minSec.style.opacity=1
+                    }
                     if (score<=0||maincache.stoped){
+                        timer.hourMin.style.opacity=1
+                        timer.minSec.style.opacity=1
                         maincache.stoped=true
                         timer_render(0,r,active)
                         clearInterval(cf.timerStop)
@@ -1205,11 +1269,12 @@
                     },100)
                 })
                 if (lastscore==undefined){return}
+                relWakeLock()
                 maincache.sub=(cf.timerScore-lastscore)*1000
                 //console.log("maincache sub:",maincache.sub)
                 if (lastscore<=0.1){
-                    timer_render(0,r,false)
-                    await timer_finish()
+                    timer_render(0,r,active)
+                    await timer_finish(r,active)
                     maincache.finished=true
                 }else{
                     timer.top.style.opacity=0.5
@@ -1267,6 +1332,8 @@
                 toabout:g("to_about"),
                 log:g("log"),
                 tolog:g("to_log"),
+                export:g("export"),
+                import:g("import"),
                 logreturn:g("log_return"),
                 fullscreen:g("fullscreenChange"),
                 to_fs:g("toFullscreen"),
@@ -1338,6 +1405,13 @@
                 const t=`${h}:${m}:${s}`
                 pretimingpush(t,"cf.prealarm_sec.splice(cf.prealarm_sec.indexOf("+sec+"),1)")
             }
+            document.addEventListener('visibilitychange',e=>{
+                if (document.visibilityState==="visible"){
+                    if (!maincache.stoped){
+                        reqWakeLock()
+                    }
+                }
+            })
             menuel.start.addEventListener("click",e=>{
                 menuel.start.disabled=true
                 menuel.stop.disabled=false
@@ -1392,6 +1466,15 @@
                 if (e.target===menuel.log){
                     menuel.log.close()
                 }
+            })
+            menuel.export.addEventListener("click",e=>{
+                prompt("そのままコピーして保存してください。絶対に編集しないでください。バグります。",JSON.stringify(cf))
+            })
+            menuel.import.addEventListener("click",e=>{
+                const json=prompt("設定データを入力してください。")
+                const obj=(function(){try{return JSON.parse(json)}catch(e){alert(e)}})()
+                if (!obj||typeof obj!=="object")return;
+                onloadifee(obj)
             })
             menuel.logreturn.addEventListener("click",e=>{
                 menuel.log.close()
@@ -1646,7 +1729,7 @@
             })
             function backup(){
                 localStorage.setItem("/timer/v1/mainsave/rendering_active",maincache.ractive)
-                localStorage.setItem("/timer/v1/mainsave/cf",JSON.stringify(cf,0,0))
+                localStorage.setItem("/timer/v1/mainsave/cf",JSON.stringify(cf))
             }
             function buttonsys(){
                 if (maincache.soundLoaded){
@@ -1678,6 +1761,8 @@
                     }
                 }
                 if (maincache.stoped){
+                    timer.hourMin.style.opacity=""
+                    timer.minSec.style.opacity=""
                     setel.timelimit_h.disabled=false
                     setel.timelimit_m.disabled=false
                     setel.timelimit_s.disabled=false
@@ -1687,6 +1772,14 @@
                     setel.pretiming_push.disabled=false
                     setel.countdown.cdactive.forEach(el=>el.disabled=false)
                     setel.countdown.startTiming.disabled=false
+                    setel.advancedmenu.adv_date_submit.disabled=false
+                    setel.soundmain.soundselect.forEach(el=>el.disabled=false)
+                    setel.repeattime.repeattime.disabled=false
+                    setel.soundmain.soundvolume.disabled=false
+                    setel.prealarm.soundvolume.disabled=false
+                    menuel.export.disabled=false
+                    menuel.import.disabled=false
+                    menuel.powerwash.disabled=false
                 }else{
                     setel.timelimit_h.disabled=true
                     setel.timelimit_m.disabled=true
@@ -1697,6 +1790,14 @@
                     setel.pretiming_push.disabled=true
                     setel.countdown.cdactive.forEach(el=>el.disabled=true)
                     setel.countdown.startTiming.disabled=true
+                    setel.advancedmenu.adv_date_submit.disabled=true
+                    setel.soundmain.soundselect.forEach(el=>el.disabled=true)
+                    setel.repeattime.repeattime.disabled=true
+                    setel.soundmain.soundvolume.disabled=true
+                    setel.prealarm.soundvolume.disabled=true
+                    menuel.export.disabled=true
+                    menuel.import.disabled=true
+                    menuel.powerwash.disabled=true
                 }
                 if (document.fullscreenEnabled){
                     menuel.fullscreen.style.display="auto"
@@ -1706,21 +1807,32 @@
             }
             buttonsys()
             const autosave_stop=setInterval(backup,5000)
-            const buttonsys_stop=setInterval(buttonsys,100)
+            const buttonsys_stop=setInterval(buttonsys,200)
 
             window.soundsOfflinePackage=window.soundsOfflinePackage||{}
             soundsOfflinePackage.countdown1="data:audio/wav;base64,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";
-            !async function(){
-                clockSoundLoad().then(ev=>maincache.soundLoaded=true)//Async関数だけど非同期で処理を回す
-                const c=JSON.parse(localStorage.getItem("/timer/v1/mainsave/cf"))
+            async function onloadifee(loaddata){
+                cf_reset()
+                if(!maincache.soundLoaded){clockSoundLoad().then(ev=>maincache.soundLoaded=true)}//Async関数だけど非同期で処理を回す
+                const c=(function(){
+                    if (loaddata){
+                        if (typeof loaddata==="object"){
+                            return loaddata
+                        }else{
+                            return JSON.parse(loaddata)
+                        }
+                    }else{
+                        return JSON.parse(localStorage.getItem("/timer/v1/mainsave/cf"))
+                    }
+                })()
                 if (!c)return;
 
                 setel.timerview.timerview.value=(function(){
                     const m=c.active
                     if(m===0)return"auto"
-                    if(m===1)return"ignore"
-                    if(m===2)return"ms"
-                    if(m===3)return"hms"
+                    else if(m===2)return"ms"
+                    else if(m===3)return"hms"
+                    else return "hms"
                 })()
                 setel.timerview.dispatchEvent(new Event("change"))
                 if (c.active){
@@ -1728,28 +1840,28 @@
                 }
                 if (c.hour){
                     cf.hour=c.hour
-                    setel.timelimit_h.value=c.hour
                 }
+                setel.timelimit_h.value=cf.hour
                 if (c.min){
                     cf.min=c.min
-                    setel.timelimit_m.value=c.min
                 }
+                setel.timelimit_m.value=cf.min
                 if (c.sec){
                     cf.sec=c.sec
-                    setel.timelimit_s.value=c.sec
                 }
+                setel.timelimit_s.value=cf.sec
                 if (c.volume){
                     cf.volume=c.volume
-                    setel.soundmain.soundvolume.value=c.volume
-                    setel.soundvolumeprint.textContent="現在の設定値: "+Math.floor(c.volume*100)+"%"
-                    sounds_k.forEach(name=>{if(name.startsWith("s")){volumechange(sounds[name])}})
                 }
+                setel.soundmain.soundvolume.value=cf.volume
+                setel.soundvolumeprint.textContent="現在の設定値: "+Math.floor(cf.volume*100)+"%"
+                sounds_k.forEach(name=>{if(name.startsWith("s")){volumechange(sounds[name])}})
                 if (c.prealarm_volume){
                     cf.prealarm_volume=c.prealarm_volume
-                    setel.prealarm.soundvolume.value=c.prealarm_volume
-                    setel.prealarmvolumeprint.textContent="現在の設定値: "+Math.floor(c.prealarm_volume*100)+"%"
-                    sounds_k.forEach(name=>{if(name.startsWith("p")){volumechange(sounds[name],c.prealarm_volume)}})
                 }
+                setel.prealarm.soundvolume.value=cf.prealarm_volume
+                setel.prealarmvolumeprint.textContent="現在の設定値: "+Math.floor(cf.prealarm_volume*100)+"%"
+                sounds_k.forEach(name=>{if(name.startsWith("p")){volumechange(sounds[name],cf.prealarm_volume)}})
                 if (c.timerScore){
                     cf.timerScore=c.timerScore
                 }
@@ -1758,42 +1870,42 @@
                 }
                 if (c.repeattime_s){
                     cf.repeattime_s=c.repeattime_s
-                    setel.repeattime.repeattime.value=(cf.repeattime_s/60).toFixed(1)
-                    setel.repeattime_print.textContent="現在の設定値: "+(cf.repeattime_s/60).toFixed(1)+"分"
                 }
+                setel.repeattime.repeattime.value=(cf.repeattime_s/60).toFixed(1)
+                setel.repeattime_print.textContent="現在の設定値: "+(cf.repeattime_s/60).toFixed(1)+"分"
                 if (c.timersize){
                     cf.timersize=c.timersize
-                    setel.timersize.timersize.value=c.timersize
-                    setel.timersize_print.textContent="現在の設定値: "+Math.round(cf.timersize*100)+"%"
-                    timer.top.style.zoom=cf.timersize
                 }
+                setel.timersize.timersize.value=cf.timersize
+                setel.timersize_print.textContent="現在の設定値: "+Math.round(cf.timersize*100)+"%"
+                timer.top.style.zoom=cf.timersize
                 if (c.usesoundcode){
                     cf.usesoundcode=c.usesoundcode
-                    setel.soundmain.soundselect.value=c.usesoundcode
                 }
+                setel.soundmain.soundselect.value=cf.usesoundcode
                 if (c.usepresoundcode){
                     cf.usepresoundcode=c.usepresoundcode
-                    setel.prealarm.soundselect.value=c.usepresoundcode
                 }
+                setel.prealarm.soundselect.value=cf.usepresoundcode
                 if (c.item_maxmin){
                     cf.item_maxmin=c.item_maxmin
                 }
                 if (c.prealarm_sec){
                     cf.prealarm_sec=c.prealarm_sec
-                    c.prealarm_sec.forEach(prealarmlistwrite)
                 }
+                cf.prealarm_sec.forEach(prealarmlistwrite)
                 if (c.countdown_sec){
                     cf.countdown_sec=c.countdown_sec
-                    setel.countdown.startTiming.value=c.countdown_sec[1]-1
                 }
+                setel.countdown.startTiming.value=cf.countdown_sec[1]-1
                 if (c.countdownSoundActive){
                     cf.countdownSoundActive=c.countdownSoundActive
                 }
-                
                 setel.timerview.dispatchEvent(new Event("change"))
                 timer_main_boot()
                 buttonsys()
-            }()
+            }
+            onloadifee()
             !function(){
                 const pa=new URLSearchParams(location.search)
                 const re={

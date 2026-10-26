@@ -4,7 +4,7 @@
         <meta charset=utf-8>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="色々な機能が備わったWebタイマーです。">
-        <title>Online Digital Timer v1.13.1</title>
+        <title>Online Digital Timer v1.14.0</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -368,12 +368,17 @@
                             <form id="setting_sound" action="#" onsubmit="event.preventDefault()">
                                 <input type=range min=0 max=1 step=0.05 value=0.5 name="soundvolume" style="width:60%" />
                                 <span id="setting_soundvolume_print">現在の設定値: 50%</span>
-                                <span style="font-size:20px;align-items:center;display:flex;flex-wrap:wrap" />
-                                    <label><input type="radio" name="soundselect" value="s1" checked />Alarm1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="sounds.s1.play()" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e><br />
-                                    <label><input type="radio" name="soundselect" value="s2" />Alarm2</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="sounds.s2.play()" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e><br />
-                                    <label><input type="radio" name="soundselect" value="s5" />Alarm3</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="sounds.s5.play()" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e><br />
-                                    <label><input type="radio" name="soundselect" value="s3" />Piano1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="sounds.s3.play()" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e><br />
-                                    <label><input type="radio" name="soundselect" value="s4" />Piano2</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="sounds.s4.play()" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e><br />
+                                <span style="font-size:20px;align-items:center;display:flex;flex-wrap:wrap;" />
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s1" checked />Alarm1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s1')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s2" />Alarm2</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s2')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s5" />Alarm3</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s5')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s7" />Alarm4</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s7')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s8" />Alarm5</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s8')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s9" />Alarm6</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s9')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s3" />Piano1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s3')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s4" />Piano2</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s4')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s6" />Piano3</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s6')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s10" />Melody1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s10')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
                                 </span>
                             </form>
                         </details>
@@ -406,8 +411,9 @@
                                     <input type=range min=0 max=1 step=0.05 value=0.5 name="soundvolume" style="width:60%" />
                                     <span id="setting_prealarm_soundvolume_print">現在の設定値: 50%</span>
                                     <span style="font-size:20px;align-items:center;display:flex;flex-wrap:wrap" />
-                                        <label><input type="radio" name="soundselect" value="p1" checked />Pre-Alarm1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="sounds.p1.play()" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e><br />
-                                        <label><input type="radio" name="soundselect" value="p2" />Pre-Alarm2</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="sounds.p2.play()" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e><br />
+                                        <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="p1" />Pre-Alarm1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('p1')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
+                                        <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="p2" />Pre-Alarm2</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('p2')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
+
                                     </span>
                                 </div>
                             </form>
@@ -466,7 +472,7 @@
                 <div id="about_top" class="maindialog">
                     <p>About - Online Digital Timer</p>
                     <p> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </p>
-                    <p>Online Digital Timer v1.13.1</p>
+                    <p>Online Digital Timer v1.14.0</p>
                     <details>
                         <summary>公式公開URL</summary>
                         <p><a href="https://ks-seed0310.github.io/timer1/timer1/latest.html" rel="noopener noreferer" target="_blank">https://ks-seed0310.github.io/timer1/timer1/latest.html</a></p>
@@ -474,6 +480,7 @@
                     </details>
                     <details>
                         <summary>history</summary>
+                        <p>〇〇アップデートという呼称はv1.14.0から始まった名前で、直近のアップデートには名前がつけられています。</p>
                         <ul>
                             <li>
                                 <details>
@@ -601,7 +608,7 @@
                             </li>
                             <li>
                                 <details>
-                                    <summary>v1.7.0 (旧表記v1.2.7)</summary>
+                                    <summary>v1.7.0 (旧表記v1.2.7) 【The Logger】</summary>
                                     <ul>
                                         <li><p>JS修正</p></li>
                                         <li><p>ログ表示システム追加</p></li>
@@ -611,7 +618,7 @@
                             </li>
                             <li>
                                 <details>
-                                    <summary>v1.8.0 (旧表記v1.2.8)</summary>
+                                    <summary>v1.8.0 (旧表記v1.2.8) 【Fullscreen Pages】</summary>
                                     <ul>
                                         <li><p>フルスクリーン画面にできる仕様追加</p></li>
                                         <li><p>多くの修正</p></li>
@@ -621,7 +628,7 @@
                             </li>
                             <li>
                                 <details>
-                                    <summary>v1.9.0</summary>
+                                    <summary>v1.9.0 【Welcome Quick Menu】</summary>
                                     <ul>
                                         <li><p>音源追加</p></li>
                                         <li><p>メニュー一覧に簡易クイックメニュー追加</p></li>
@@ -638,7 +645,7 @@
                             </li>
                             <li>
                                 <details>
-                                    <summary>v1.10.0</summary>
+                                    <summary>v1.10.0 【The Offline!】</summary>
                                     <ul>
                                         <li><p>オフラインパッケージ正式サポート開始</p></li>
                                         <li><p>サウンド読み込み関数アップデート</p></li>
@@ -649,7 +656,7 @@
                             </li>
                             <li>
                                 <details>
-                                    <summary>v1.11.0</summary>
+                                    <summary>v1.11.0 【...Are you ready?】</summary>
                                     <ul>
                                         <li><p>Pre-Alarm追加(終了数分前にプレアラームが鳴る)</p></li>
                                         <li><p>バグ修正</p></li>
@@ -676,7 +683,7 @@
                             </li>
                             <li>
                                 <details>
-                                    <summary>v1.12.0</summary>
+                                    <summary>v1.12.0 【Countdown Update】</summary>
                                     <ul>
                                         <li><p>カウントダウン音声の再生開始タイミング設定機能追加</p></li>
                                         <li><p>カウントダウン音声のON/OFF切り替え機能追加</p></li>
@@ -689,7 +696,7 @@
                             </li>
                             <li>
                                 <details>
-                                    <summary>v1.13.0</summary>
+                                    <summary>v1.13.0 【Configuration? Update】</summary>
                                     <ul>
                                         <li><p>設定データの書き出し・読み込み機能追加</p></li>
                                         <li><p>Screen Wake Lock API導入</p></li>
@@ -706,6 +713,18 @@
                                     <p>v1.13.0公開から30分という異例の時間でのアップデート</p>
                                     <ul>
                                         <li><p>バグ発見に付き緊急アップデート</p></li>
+                                    </ul>
+                                    <p>余談だけど、v1.12.0から存在したバグらしい。(修正済み)</p>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.14.0 【音の海アップデート】</summary>
+                                    <ul>
+                                        <li><p>アラーム音源追加(サウンドID:s3ことPiano1があまりに不協和音過ぎたのでPiano1の代替版を追加。<br />
+                                            けど置き換えはこの音源が好きだった人がいる可能性も踏まえて追加にしました。)</p></li>
+                                        <li><p>その他アラーム音源を4つ追加(計5音源追加。追加音源:Alarm4,Alarm5,Alarm6,Piano3,Melody1)</p></li>
+                                        <li><p>細かいバグ修正、利用快適化</p></li>
                                     </ul>
                                 </details>
                             </li>
@@ -769,7 +788,7 @@
         <script>
             //最初の方にタイマー非依存処理を書いておく。
             const constant={
-                title:"Online Digital Timer v1.13.1",
+                title:"Online Digital Timer v1.14.0",
                 titlechange_add2_ts:{
                     none:["",""],
                     ltgt:["<",">"],
@@ -850,6 +869,11 @@
                 s3:"https://ks-seed0310.github.io/audio_storage/timer_melody_original.txt",
                 s4:"https://ks-seed0310.github.io/audio_storage/timer_melody_ode_to_joy_loop.txt",
                 s5:"https://ks-seed0310.github.io/audio_storage/timer_alarm_gemini01.txt",
+                s6:"https://ks-seed0310.github.io/audio_storage/timer_melody_original_v2.txt",
+                s7:"https://ks-seed0310.github.io/audio_storage/timer_microwave_beep.txt",
+                s8:"https://ks-seed0310.github.io/audio_storage/timer_digital_watch_alarm.txt",
+                s9:"https://ks-seed0310.github.io/audio_storage/timer_ding_dong_chime.txt",
+                s10:"https://ks-seed0310.github.io/audio_storage/timer_marimba_loop.txt",
                 p1:"https://ks-seed0310.github.io/audio_storage/preAlarm_gemini01.txt",
                 p2:"https://ks-seed0310.github.io/audio_storage/pipon_time_signal.txt",
                 countdown1:"https://ks-seed0310.github.io/audio_storage/countdown_beep.txt",
@@ -860,7 +884,12 @@
                 s3:"timer_melody_original",
                 s4:"timer_melody_ode_to_joy_loop",
                 s5:"timer_alarm_gemini01",
-                p1:"preAlarm_gemini01.txt",
+                s6:"timer_melody_original_v2",
+                s7:"timer_microwave_beep",
+                s8:"timer_digital_watch_alarm",
+                s9:"timer_ding_dong_chime",
+                s10:"timer_marimba_loop",
+                p1:"preAlarm_gemini01",
                 p2:"pipon_time_signal",
                 countdown1:"countdown_beep",
             }
@@ -939,6 +968,15 @@
                         reject(e)
                     })
                 })
+            }
+            function playsound_demo(audioid,self){
+                const audio=sounds[audioid]
+                if (!audio){
+                    self.disabled=true
+                    return
+                }
+                Object.values(sounds).forEach(se=>stopsound(se))
+                return playsound(audio)
             }
             function stopsound(audio,reset=true){
                 if (!audio)return false
@@ -1283,6 +1321,11 @@
                 //console.log("maincache sub:",maincache.sub)
                 if (lastscore<=0.1){
                     timer_render(0,r,active)
+                    if (active===2){
+                        titlechange("00:00")
+                    }else if (active===3){
+                        titlechange("00:00:00")
+                    }
                     await timer_finish(r,active)
                     maincache.finished=true
                 }else{
@@ -1922,7 +1965,7 @@
                     min:pa.get("m")??(pa.get("min")??(pa.get("minute"))),
                     sec:pa.get("s")??(pa.get("sec")??(pa.get("second"))),
                 }
-                if (re.hour!==null||re.min!==null||re.sec!==null){
+                if (re.hour||re.min||re.sec){
                     console.log(Number(re.hour)??0,Number(re.min)??0,Number(re.sec)??0)
                     template_lim(Number(re.hour)??0,Number(re.min)??0,Number(re.sec)??0)
                 }

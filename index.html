@@ -4,9 +4,9 @@
         <meta charset=utf-8>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="色々な機能が備わったWebタイマーです。">
-        <title>Online Digital Timer v1.14.0</title>
+        <title>Online Digital Timer v1.15.0</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://gstatic.com" crossorigin>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
         <style>
             html{
@@ -20,7 +20,7 @@
                 margin:0px;
             }
             .boldtext{
-                font-family:'Roboto',monospace,system-ui,sans-serif !important;
+                font-family:'Roboto','Arial',monospace,system-ui,sans-serif !important;
                 font-feature-settings: "tnum" 1 !important;
                 font-variant-numeric: tabular-nums !important;
                 font-weight:700;
@@ -369,16 +369,26 @@
                                 <input type=range min=0 max=1 step=0.05 value=0.5 name="soundvolume" style="width:60%" />
                                 <span id="setting_soundvolume_print">現在の設定値: 50%</span>
                                 <span style="font-size:20px;align-items:center;display:flex;flex-wrap:wrap;" />
-                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s1" checked />Alarm1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s1')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
-                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s2" />Alarm2</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s2')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
-                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s5" />Alarm3</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s5')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
-                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s7" />Alarm4</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s7')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
-                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s8" />Alarm5</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s8')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
-                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s9" />Alarm6</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s9')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
-                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s3" />Piano1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s3')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
-                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s4" />Piano2</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s4')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
-                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s6" />Piano3</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s6')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
-                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s10" />Melody1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s10')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s1" checked />Alarm1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s1',this)" onkeydown="if(event.key==='Enter'){this.dispatchEvent(new Event('click')
+)}" style="cursor:pointer;" tabindex=0></sp-e><sp-e s=16></sp-e></span>
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s2" />Alarm2</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s2',this)" onkeydown="if(event.key==='Enter'){this.dispatchEvent(new Event('click')
+)}" style="cursor:pointer;" tabindex=0></sp-e><sp-e s=16></sp-e></span>
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s5" />Alarm3</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s5',this)" onkeydown="if(event.key==='Enter'){this.dispatchEvent(new Event('click')
+)}" style="cursor:pointer;" tabindex=0></sp-e><sp-e s=16></sp-e></span>
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s7" />Alarm4</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s7',this)" onkeydown="if(event.key==='Enter'){this.dispatchEvent(new Event('click')
+)}" style="cursor:pointer;" tabindex=0></sp-e><sp-e s=16></sp-e></span>
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s8" />Alarm5</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s8',this)" onkeydown="if(event.key==='Enter'){this.dispatchEvent(new Event('click')
+)}" style="cursor:pointer;" tabindex=0></sp-e><sp-e s=16></sp-e></span>
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s9" />Alarm6</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s9',this)" onkeydown="if(event.key==='Enter'){this.dispatchEvent(new Event('click')
+)}" style="cursor:pointer;" tabindex=0></sp-e><sp-e s=16></sp-e></span>
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s3" />Piano1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s3',this)" onkeydown="if(event.key==='Enter'){this.dispatchEvent(new Event('click')
+)}" style="cursor:pointer;" tabindex=0></sp-e><sp-e s=16></sp-e></span>
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s4" />Piano2</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s4',this)" onkeydown="if(event.key==='Enter'){this.dispatchEvent(new Event('click')
+)}" style="cursor:pointer;" tabindex=0></sp-e><sp-e s=16></sp-e></span>
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s6" />Piano3</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s6',this)" onkeydown="if(event.key==='Enter'){this.dispatchEvent(new Event('click')
+)}" style="cursor:pointer;" tabindex=0></sp-e><sp-e s=16></sp-e></span>
+                                    <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s10" />Melody1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s10',this)" onkeydown="if(event.key==='Enter'){this.dispatchEvent(new Event('click')
+)}" style="cursor:pointer;" tabindex=0></sp-e><sp-e s=16></sp-e></span>
                                 </span>
                             </form>
                         </details>
@@ -411,9 +421,12 @@
                                     <input type=range min=0 max=1 step=0.05 value=0.5 name="soundvolume" style="width:60%" />
                                     <span id="setting_prealarm_soundvolume_print">現在の設定値: 50%</span>
                                     <span style="font-size:20px;align-items:center;display:flex;flex-wrap:wrap" />
-                                        <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="p1" />Pre-Alarm1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('p1')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
-                                        <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="p2" />Pre-Alarm2</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('p2')" style="cursor:pointer;"></sp-e><sp-e s=16></sp-e></span>
-
+                                        <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="p1" />Pre-Alarm1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('p1',this)" onkeydown="if(event.key==='Enter'){this.dispatchEvent(new Event('click')
+)}" style="cursor:pointer;" tabindex=0></sp-e><sp-e s=16></sp-e></span>
+                                        <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="p2" />Pre-Alarm2</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('p2',this)" onkeydown="if(event.key==='Enter'){this.dispatchEvent(new Event('click')
+)}" style="cursor:pointer;" tabindex=0></sp-e><sp-e s=16></sp-e></span>
+                                        <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="p3" />Pre-Alarm3</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('p3',this)" onkeydown="if(event.key==='Enter'){this.dispatchEvent(new Event('click')
+)}" style="cursor:pointer;" tabindex=0></sp-e><sp-e s=16></sp-e></span>
                                     </span>
                                 </div>
                             </form>
@@ -449,6 +462,18 @@
                             <button class="btnsmall" id="export" title="設定をエクスポートします。">Export</button>
                             <button class="btnsmall" id="import" title="設定をインポートします。">Import</button>
                         </details>
+                        <details class="settingDetails">
+                            <summary title="Developer Tools.">Developer Tools</summary>
+                            <p style="color:red;margin:4px;">【警告】このタブでは、タイマー動作中に押せないボタンまで押せます。</p>
+                            <p style="color:red;margin:4px;">バグ発生時の強制停止などを目的としたものであり、通常利用は勧めません。</p>
+                            <p style="color:red;margin:4px;">利用には十分にお気をつけください。(システム関数と直接つながっています)</p>
+                            <form id="set_devtools" action="#" onsubmit="event.preventDefault()">
+                                <h3>担当要素の機能呼び出し(disabledの要素にeventを発生させる)</h3>
+                                <button type="button" name="start_devtool" class="btnsmall">強制開始</button>
+                                <button type="button" name="stop_devtool" class="btnsmall">強制停止</button>
+                                <button type="button" name="reset_devtool" class="btnsmall">強制リセット</button>
+                            </form>
+                        </details>
                         <button class="btn" id="to_home" style="font-size:1rem;" title="タイマーの画面に戻ります。">戻る</button>
                     </div>
                 </div>
@@ -472,12 +497,20 @@
                 <div id="about_top" class="maindialog">
                     <p>About - Online Digital Timer</p>
                     <p> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </p>
-                    <p>Online Digital Timer v1.14.0</p>
+                    <p>Online Digital Timer v1.15.0</p>
                     <details>
                         <summary>公式公開URL</summary>
                         <p><a href="https://ks-seed0310.github.io/timer1/timer1/latest.html" rel="noopener noreferer" target="_blank">https://ks-seed0310.github.io/timer1/timer1/latest.html</a></p>
                         <p><a href="https://sprst.github.io/timer1/" rel="noopener noreferer" target="_blank">https://sprst.github.io/timer1/</a></p>
                     </details>
+                    <p style="color:red">
+                        ※注意　v1.15.0はv1.14.0までほとんど変更が入っていなかった内部の最重要システムの書き換えが起こっています。<br />
+                        バグ対処が遅れると予測されるため、バグ発生時にはv1.14.0にお戻りください。<br />
+                    </p>
+                    <p>v1.14.0公開URL<br />
+                        <a href="https://sprst.github.io/timer1/v1.14.0.html" rel="noopener noreferer" target="_blank">https://sprst.github.io/timer1/v1.14.0.html</a><br />
+                        <a href="https://ks-seed0310.github.io/timer1/timer1/v1.14.0.html" rel="noopener noreferer" target="_blank">https://ks-seed0310.github.io/timer1/timer1/v1.14.0.html</a>
+                    </p>
                     <details>
                         <summary>history</summary>
                         <p>〇〇アップデートという呼称はv1.14.0から始まった名前で、直近のアップデートには名前がつけられています。</p>
@@ -728,6 +761,21 @@
                                     </ul>
                                 </details>
                             </li>
+                            <li>
+                                <details>
+                                    <summary>v1.15.0 【The Focusable and System++】</summary>
+                                    <ul>
+                                        <li><p>Tabキーのみでフォーカスを切り替えても音源試し聞きが出来るように追加</p></li>
+                                        <li><p>Pre-Alarm音源を1音源追加</p></li>
+                                        <li><p>制限時間を入力する項目をマウススクロールで設定しやすいように改善<br>(余談だけどtimer_main_boot関数をかなり久しぶりに書き換えて非常に面倒でした)</p></li>
+                                        <li><p>Developer Tools追加</p></li>
+                                        <li><p>Web Workersを追加(これを追加したことによって別ページにいてもタイマーが勝手に止まることがなくなりました)<br />
+                                            ←非常に非常に面倒でした...(所要時間4時間休憩無し)<br />
+                                            中心の制御システムの大規模書き換えをしたから非常に面倒でした()
+                                        </p></li>
+                                    </ul>
+                                </details>
+                            </li>
                         </ul>
                     </details>
                     <p> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </p>
@@ -788,7 +836,7 @@
         <script>
             //最初の方にタイマー非依存処理を書いておく。
             const constant={
-                title:"Online Digital Timer v1.14.0",
+                title:"Online Digital Timer v1.15.0",
                 titlechange_add2_ts:{
                     none:["",""],
                     ltgt:["<",">"],
@@ -876,6 +924,7 @@
                 s10:"https://ks-seed0310.github.io/audio_storage/timer_marimba_loop.txt",
                 p1:"https://ks-seed0310.github.io/audio_storage/preAlarm_gemini01.txt",
                 p2:"https://ks-seed0310.github.io/audio_storage/pipon_time_signal.txt",
+                p3:"https://ks-seed0310.github.io/audio_storage/timer_ding_dong_chime_1loop.txt",
                 countdown1:"https://ks-seed0310.github.io/audio_storage/countdown_beep.txt",
             }
             const sounds_ts={// sx:sound(alarm) px:sound(pre-alarm)
@@ -891,6 +940,7 @@
                 s10:"timer_marimba_loop",
                 p1:"preAlarm_gemini01",
                 p2:"pipon_time_signal",
+                p3:"timer_ding_dong_chime_1loop",
                 countdown1:"countdown_beep",
             }
             const sounds={
@@ -948,7 +998,7 @@
                     }
                 }
             }
-            async function playsound(audio,audiostop=true){
+            function playsound(audio,audiostop=true){
                 if (!audio)return false
                 if (audiostop)stopsound(audio)
                 return new Promise((resolve,reject)=>{
@@ -969,27 +1019,29 @@
                     })
                 })
             }
-            function playsound_demo(audioid,self){
-                const audio=sounds[audioid]
-                if (!audio){
-                    self.disabled=true
-                    return
-                }
-                Object.values(sounds).forEach(se=>stopsound(se))
-                return playsound(audio)
-            }
             function stopsound(audio,reset=true){
                 if (!audio)return false
                 audio.pause()
                 audio.currentTime=0
-                audio.onended=null
-                audio.onerror=null
                 if (reset)audio.load()
+            }
+            function playsound_demo(audioid,self){
+                const audio=sounds[audioid]
+                if (!audio){
+                    self.childNodes[0].childNodes[0].style.opacity=0.5
+                    return
+                }
+                self.childNodes[0].childNodes[0].style.opacity=1
+                Object.values(sounds).forEach(se=>{stopsound(se)})
+                return playsound(audio)
             }
             function volumechange(audio,volume){
                 audio.volume=volume??cf.volume
             }
             class HTMLSpaceElement extends HTMLElement{
+                constructor(){
+                    super()
+                }
                 connectedCallback(){
                     const template_ts={
                         volumeIcon1:`<svg viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="11" fill="#619fcf" /><path d="M10.5 6L6.5 9.5H3.5v5h3l4 3.5V6z" fill="#ffffff" /><g fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 9a4 4 0 0 1 0 6" /><path d="M17.5 6.5a8 8 0 0 1 0 11" /></g></svg>`,
@@ -1094,7 +1146,7 @@
                 for (let i=0;i<3;i++){
                     const e=el[i]
                     const l=lim[key[i]]
-                    e.min=l[0]
+                    e.min=l[0]-1
                     e.max=l[1]+1
                 }
             }
@@ -1119,14 +1171,13 @@
                 limupdate()
             }
             async function timer_finish(renderMode,activer){
-                const audio=sounds[cf.usesoundcode]
                 const startTime=performance.now()
                 timer.top.style.opacity=0.2
                 await new Promise(async r=>{
                     for (let i=0;i<65536;i++){
                         let played=false
-                        playsound(audio).then(()=>{played=true})
-
+                        const audio=sounds[cf.usesoundcode]
+                        const promise_=playsound(audio).then(()=>{played=true})
                         await new Promise(r2=>{
                             const stop=setInterval(()=>{
                                 const t=(performance.now()-startTime)/1000
@@ -1247,10 +1298,196 @@
                     titlechange(re)
                 }
             }
+            const worker_c=`
+                /*
+                e.data.type一覧
+                    resp → mget(message data get)で送ったクエリの返答(Window側)
+                    wres → defaultの返答 respのworker版
+                    default → Window側からWorker側へのメッセージ
+                    worker → Worker側からWindow側へのメッセージ
+                    debug → 変数・関数を持ってくる(Window側から実行する)
+                */
+                /*
+                e.dataプロパティ一覧
+                    type → 送信者や内容を理解するためのもの
+                    cmd → このメッセージがどういうことを指示する命令かを表す(命令の種類分けに使うプロパティ)
+                    cmd_k → cmd_vといっしょに使われるやつ。{cmd_k:cmd_v}の関係
+                    cmd_v → type:workerの時に変更するデータを入れたり、色々とメインデータ送信で使われるプロパティ
+                    respCode → プログラムのバグ防止用でworker.function.mgetが発行するコード(workerで送るのとrespで返すのどっちも同じ値が使い回されます)
+                    returnVal → workerで送ってrespで返ってきたメッセージで実際にプログラムに返す値(cmd_vでも可)
+                    config → js Objectを送信するやつ(これは返答するものじゃなくて開始命令といっしょに送ったりする追加プロパティ)
+                */
+                const _mget_dt={
+                    i:1,
+                    relvstack:{},
+                }
+                self._mget_dt=_mget_dt
+                function _mrelv(msgev){
+                    const vf=()=>{}
+                    const rcode=msgev.data.respCode
+                    const relv=_mget_dt.relvstack[rcode]??vf
+                    relv(msgev.data.returnVal??msgev.data.cmd_v)
+                    delete _mget_dt.relvstack[rcode]
+                }
+                function mget(data){
+                    const i=_mget_dt.i++
+                    const d={...data,...{respCode:i,type:"worker"}}
+                    return new Promise(function(relv){
+                        _mget_dt.relvstack[i]=relv
+                        self.postMessage(d)
+                    })
+                }
+                self.addEventListener("message",function(e){
+                    //console.log(e.data.type,e.data.cmd,e.data.cmd_k,e.data.cmd_v,e.data.respCode)
+                    if (e.data.type==="resp"){
+                        _mrelv(e)
+                    }else if (e.data.type==="debug"){
+                        const a=typeof e.data.cmd_k==="string"?e.data.cmd_k.split("/"):e.data.cmd_k
+                        const v=a.reduce((prev,curr)=>prev?.[curr],self)
+                        console.log(a,v)
+                    }else if (e.data.type==="default"){
+                        switch (e.data.cmd){
+                            case "timer_start":{
+                                timer_worker(e.data.config)
+                                self.postMessage({type:"wres",returnVal:0,respCode:e.data.respCode??0})
+                                break
+                            }
+                            case "timer_stop":{
+                                timer_worker_stopfunc()
+                                self.postMessage({type:"wres",returnVal:0,respCode:e.data.respCode??0})
+                                break
+                            }
+                            case "test":{
+                                self.postMessage({type:"wres",returnVal:"test ok!",respCode:e.data.respCode??0})
+                                break
+                            }
+                            default:{
+                                console.log("worker_undefined(worker側): ",e.data.cmd)
+                                self.postMessage({type:"wres",returnVal:null,respCode:e.data.respCode??0})
+                            }
+                        }
+                    }
+                })
+                self.timer_worker_stop;
+                self.timer_worker_score;
+                /**@param conf {{rendmode:number,activer:number}}*/
+                function timer_worker(conf){
+                    timer_worker_stop=setInterval(async ()=>{
+                        const score=await mget({cmd:"cf_get",cmd_k:"timerScore"})-((performance.now()-await mget({cmd:"maincache_get",cmd_k:"start"}))/1000)
+                        self.timer_worker_score=score
+                        mget({cmd:"timer_worker_render_run",config:[score,conf.rendmode,conf.activer]})
+                        if (score<=0||await mget({cmd:"maincache_get",cmd_k:"stoped"})){
+                            timer_worker_stopfunc()
+                        }
+                    },100)
+                }
+                function timer_worker_stopfunc(){
+                    clearInterval(timer_worker_stop)
+                    mget({cmd:"timer_stop",cmd_v:timer_worker_score})
+                    mget({cmd:"maincache_change",cmd_k:"stoped",cmd_v:true})
+                }
+                //self.postMessage({cmd:"cf_get",cmd_k:"active"})
+                (async function(){
+                    console.log(_mget_dt.i,"mget(cf.active): ",await mget({cmd:"cf_get",cmd_k:"active"}))
+                    console.log(_mget_dt.i,"mget(maincache.ractive): ",await mget({cmd:"maincache_get",cmd_k:"ractive"}))
+                })()
+            `
+            const worker_c_blob=new Blob([worker_c],{type:"text/javascript"})
+            const worker=new Worker(URL.createObjectURL(worker_c_blob))
+            const _wget_dt={
+                i:1,
+                relvstack:{},
+            }
+            const _worker_cache={
+                timer_main:{
+                    lastscore:undefined,
+                },
+            }
+            function _wrelv(msgev){
+                const vf=()=>{}
+                const rcode=msgev.data.respCode
+                const relv=_wget_dt.relvstack[rcode]??vf
+                relv(msgev.data.returnVal??msgev.data.cmd_v)
+                delete _wget_dt.relvstack[rcode]
+            }
+            function wget(data){
+                const i=_wget_dt.i++
+                const d={...data,...{respCode:i,type:"default"}}
+                return new Promise(function(relv){
+                    _wget_dt.relvstack[i]=relv
+                    worker.postMessage(d)
+                })
+            }
+            worker.addEventListener("message",function(e){
+                //console.log(e.data.type,e.data.cmd,e.data.cmd_k,e.data.cmd_v,e.data.respCode)
+                if (e.data.type==="wres"){
+                    _wrelv(e)
+                }else if (e.data.type==="worker"){
+                    switch (e.data.cmd){
+                        case "cf_change":{
+                            cf[e.data.cmd_k]=e.data.cmd_v
+                            break;
+                        }
+                        case "maincache_change":{
+                            maincache[e.data.cmd_k]=e.data.cmd_v
+                            break;
+                        }
+                        case "cf_get":{
+                            const v=cf[e.data.cmd_k]
+                            worker.postMessage({type:"resp",returnVal:v,respCode:e.data.respCode??0})
+                            break;
+                        }
+                        case "maincache_get":{
+                            const v=maincache[e.data.cmd_k]
+                            worker.postMessage({type:"resp",returnVal:v,respCode:e.data.respCode??0})
+                            break;
+                        }
+                        case "timer_worker_render_run":{
+                            const conf=e.data.config
+                            worker.postMessage({type:"resp",returnVal:timer_worker_render(conf),respCode:e.data.respCode??0})
+                            break;
+                        }
+                        case "timer_stop":{
+                            console.log("stop_code")
+                            _worker_cache.timer_main.lastscore=e.data.cmd_v
+                            break;
+                        }
+                        default:{
+                            console.log("worker_undefined(window側): ",e.data.cmd)
+                            worker.postMessage({type:"resp",returnVal:null,respCode:e.data.respCode??0})
+                        }
+                    }
+                }
+            })
+            function timer_worker_render(conf){
+                const score=conf[0]
+                const rendmode=conf[1]
+                const activer=conf[2]
+                const re=(function(){
+                    if (document.visibilityState==="visible"){
+                        if (score%1<0.5){
+                            timer.hourMin.style.opacity=0.05
+                            timer.minSec.style.opacity=0.05
+                        }else{
+                            timer.hourMin.style.opacity=1
+                            timer.minSec.style.opacity=1
+                        }
+                        return timer_render(Math.round(score),rendmode,activer)
+                    }else{
+                        return (Math.trunc(score/3600)>0?
+                            (`${Math.trunc(score/3600)}:${Math.trunc(score%3600/60)}:${Math.trunc(score%60)}`):
+                            (`${Math.trunc(score/60)}:${Math.trunc(score%60)}`)
+                        )
+                    }
+                })()
+                timer_main_titlesys(re)
+                timer_cdsound(score)
+                return true
+            }
+            //URL.revokeObjectURL(worker_c_blob) 開発段階なので消す
             async function timer_main(){
                 reqWakeLock()
                 timer.top.style.opacity=1
-            
                 const e=timer.top
                 const r=(function(){
                     if (e.classList.contains("lastlen2")){
@@ -1285,7 +1522,13 @@
                 maincache.stoped=false
                 maincache.finished=false
                 let lastscore
-                cf.timerStop=setInterval(()=>{
+                _worker_cache.timer_main.lastscore=undefined; //let lastscoreの代替(Web Workersの前に使われてたもの)
+                `＜警告＞
+                    下のコード(v1.15以前のタイマー制御コード)は絶対に削除するな！！
+                    開発でGithubの履歴を見るのは非常に面倒だからやめておけ
+                    絶対に削除するな！！
+                `
+                /*cf.timerStop=setInterval(()=>{
                     const score=cf.timerScore-((performance.now()-maincache.start)/1000)
                     lastscore=score
                     //console.log(score,performance.now(),maincache.start,maincache.sub)
@@ -1307,6 +1550,8 @@
                         clearInterval(cf.timerStop)
                     }
                 },100)
+                */
+                wget({cmd:"timer_start",config:{rendmode:r,activer:active}})
                 await new Promise(r=>{
                     const stop=setInterval(()=>{
                         if (maincache.stoped){
@@ -1315,7 +1560,10 @@
                         }
                     },100)
                 })
-                if (lastscore==undefined){return}
+                
+                lastscore=_worker_cache.timer_main.lastscore //全部書き直すの大変だからlastscoreに代入している。
+                
+                if (lastscore===undefined)return;
                 relWakeLock()
                 maincache.sub=(cf.timerScore-lastscore)*1000
                 //console.log("maincache sub:",maincache.sub)
@@ -1332,11 +1580,13 @@
                     timer.top.style.opacity=0.5
                 }
             }
-            function timer_main_boot(bootmode=false){
+            function timer_main_boot(bootmode=false,arrange=true){
+                if (arrange)timeLimitArrange(false)
                 let bootbad
                 if (bootmode){
                     const elm=[...setel.timelimit.timelimit]
-                    const lim=[...setel.timelimit.timelimit].map(x=>Number(x.value))
+                    const lim_nonedit=[...setel.timelimit.timelimit].map(x=>Number(x.value))
+                    const lim=[...lim_nonedit].map(x=>Math.max(0,x))
                     const col={ok:"green",ng:"red"}
                     const key=["h","m","s"]
                     const log=[]
@@ -1349,6 +1599,9 @@
                     }
                     for (let i=0;i<3;i++){
                         const el=elm[i]
+                        if (lim_nonedit[i]<0){
+                            el.value=0
+                        }
                         const inp=lim[i]
                         const limit=cf.item_maxmin[key[i]]
                         if (limit[0]<=inp&&inp<=limit[1]){
@@ -1419,6 +1672,7 @@
                 pretiming_push:g("setting_prealarm_timing_p"),
                 countdown:g("setting_countdown"),
                 advancedmenu:g("setting_advancedmenu"),
+                devtools:g("set_devtools"),
             }
             function pretimingpush(txt,func="",outelm=setel.prealarmtimingprint){
                 const outel=outelm||setel.prealarmtimingprint
@@ -1474,6 +1728,7 @@
                 menuel.stop.disabled=true
                 maincache.stoped=true
                 clearInterval(cf.timerStop)
+                wget({cmd:"timer_stop"})
                 cdreset()
                 if (maincache.stoped&&!maincache.finished){
                     maincache.finished=true
@@ -1625,21 +1880,21 @@
                 const s=Number(se.value)
                 const score=h*3600+m*60+s
                 if (cf.active===3){
-                    he.value=Math.floor(score/3600)
-                    me.value=Math.floor(score%3600/60)
+                    he.value=Math.trunc(score/3600)
+                    me.value=Math.trunc(score%3600/60)
                     se.value=score%60
                 }else if (cf.active===2){
                     he.value=0
-                    me.value=Math.floor(score/60)
+                    me.value=Math.trunc(score/60)
                     se.value=score%60
                 }else if (cf.active===0){
                     if (h===0){
                         he.value=0
-                        me.value=Math.floor(score/60)
+                        me.value=Math.trunc(score/60)
                         se.value=score%60
                     }else{
-                        he.value=Math.floor(score/3600)
-                        me.value=Math.floor(score%3600/60)
+                        he.value=Math.trunc(score/3600)
+                        me.value=Math.trunc(score%3600/60)
                         se.value=score%60
                     }
                 }
@@ -1778,6 +2033,24 @@
                     e.target.disabled=false
                     ve.disabled=false
                 },500)
+            })
+            setel.devtools.start_devtool.addEventListener("click",async e=>{
+                e.target.disabled=true
+                menuel.start.dispatchEvent(new Event("click"))
+                await new Promise(r=>setTimeout(r,500))
+                e.target.disabled=false
+            })
+            setel.devtools.stop_devtool.addEventListener("click",async e=>{
+                e.target.disabled=true
+                menuel.stop.dispatchEvent(new Event("click"))
+                await new Promise(r=>setTimeout(r,500))
+                e.target.disabled=false
+            })
+            setel.devtools.reset_devtool.addEventListener("click",async e=>{
+                e.target.disabled=true
+                menuel.reset.dispatchEvent(new Event("click"))
+                await new Promise(r=>setTimeout(r,500))
+                e.target.disabled=false
             })
             function backup(){
                 localStorage.setItem("/timer/v1/mainsave/rendering_active",maincache.ractive)

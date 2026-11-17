@@ -4,10 +4,12 @@
         <meta charset=utf-8>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="色々な機能が備わったWebタイマーです。">
-        <title>Online Digital Timer v1.15.0</title>
+        <title>Online Digital Timer v1.16.0</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+        <link href="https://seedfont.github.io/mahg-sans-digit-tnum/dist/400/swap.css" rel="stylesheet">
+        <link href="https://seedfont.github.io/mahg-sans-digit-tnum/dist/700/swap.css" rel="stylesheet">
         <style>
             html{
                 width:100vw;
@@ -20,10 +22,11 @@
                 margin:0px;
             }
             .boldtext{
-                font-family:'Roboto','Arial',monospace,system-ui,sans-serif !important;
-                font-feature-settings: "tnum" 1 !important;
-                font-variant-numeric: tabular-nums !important;
+                font-family:inherit;
+                font-feature-settings: "tnum" 1;
+                font-variant-numeric: tabular-nums;
                 font-weight:700;
+                text-box: trim-both cap alphabetic;
             }
             #timer_alltop{
                 background-color:#ffffff;
@@ -35,6 +38,31 @@
                 display:flex;
                 justify-content:flex-start;
                 align-items:center;
+            }
+            #timer_grtop.mahg-actv{
+                font-family:mahg-sans-digit;
+                padding-top:48px;
+                padding-bottom:80px;
+            }
+            #timer_grtop.roboto-actv{
+                font-family:Roboto,Arial;
+                padding-top:64px;
+                padding-bottom:96px;
+            }
+            #timer_grtop.mono-actv{
+                font-family:monospace;
+                padding-top:64px;
+                padding-bottom:96px;
+            }
+            #timer_grtop.arial-actv{
+                font-family:Arial;
+                padding-top:64px;
+                padding-bottom:96px;
+            }
+            #timer_grtop.sans-actv{
+                font-family:sans-serif;
+                padding-top:64px;
+                padding-bottom:96px;
             }
             #timer_top{
                 width:95vw;
@@ -106,8 +134,8 @@
                 cursor:not-allowed;
             }
             #setting{
-                width:85%;
-                height:85%;
+                width:80%;
+                height:80%;
                 padding:0px;
                 border-radius:24px;
                 border:0px;
@@ -189,8 +217,8 @@
                 cursor:default;
             }
             dialog.maindialog{
-                width:85%;
-                height:85%;
+                width:80%;
+                height:80%;
                 padding:0px;
                 border-radius:24px;
                 border:0px;
@@ -245,7 +273,7 @@
                 border:0px;
                 background-color:#ffffff;
             }
-            .el_gr_01[disabled] .el_gr_01_child{
+            .el_gr_01[disabled] > sp-e > span > svg{
                 opacity:0.5;
             }
         </style>
@@ -254,7 +282,7 @@
         <div>
             <div id="timer_alltop">
                 <div id="timer_view">
-                    <div id="timer_grtop">
+                    <div id="timer_grtop" class="mahg-actv">
                         <span id="timer_top" class="boldtext active3 lastlen2"><span id="timer_hour">00</span><span id="hour_min_join"><sp-e s=8 mirror>:</sp-e></span><span id="timer_minute">00</span><span id="min_sec_join"><sp-e s=8 mirror>:</sp-e></span><span id="timer_second">00</span></span>
                     </div>
                 </div>
@@ -361,6 +389,16 @@
                                 <label><input type="radio" name="timerview" value="auto" checked />自動</label>
                                 <label><input type="radio" name="timerview" value="hms" />hh:mm:ss</label>
                                 <label><input type="radio" name="timerview" value="ms" />mm:ss</label>
+                            </form>
+                        </details>
+                        <details class="settingDetails">
+                            <summary title="フォントを設定します。">タイマーフォント設定</summary>
+                            <form id="setting_font" action="#" onsubmit="event.preventDefault()">
+                                <label><input type="radio" name="timerfont" value="mahg-actv" checked />Mahg Sans Digit</label>
+                                <label><input type="radio" name="timerfont" value="roboto-actv"/>Roboto</label>
+                                <label><input type="radio" name="timerfont" value="mono-actv"/>MonoSpace</label>
+                                <label><input type="radio" name="timerfont" value="arial-actv"/>Arial</label>
+                                <label><input type="radio" name="timerfont" value="sans-actv" />Sans Serif</label>
                             </form>
                         </details>
                         <details class="settingDetails">
@@ -497,7 +535,7 @@
                 <div id="about_top" class="maindialog">
                     <p>About - Online Digital Timer</p>
                     <p> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </p>
-                    <p>Online Digital Timer v1.15.0</p>
+                    <p>Online Digital Timer v1.16.0</p>
                     <details>
                         <summary>公式公開URL</summary>
                         <p><a href="https://ks-seed0310.github.io/timer1/timer1/latest.html" rel="noopener noreferer" target="_blank">https://ks-seed0310.github.io/timer1/timer1/latest.html</a></p>
@@ -776,6 +814,17 @@
                                     </ul>
                                 </details>
                             </li>
+                            <li>
+                                <details>
+                                    <summary>v1.16.0 【The Fonts】</summary>
+                                    <ul>
+                                        <li><p>操作性アップデート</p></li>
+                                        <li><p>import,exportの内部処理修正</p></li>
+                                        <li><p>タイマープログラム(Worker)の軽微な修正</p></li>
+                                        <li><p>フォント設定追加</p></li>
+                                    </ul>
+                                </details>
+                            </li>
                         </ul>
                     </details>
                     <p> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </p>
@@ -836,7 +885,7 @@
         <script>
             //最初の方にタイマー非依存処理を書いておく。
             const constant={
-                title:"Online Digital Timer v1.15.0",
+                title:"Online Digital Timer v1.16.0",
                 titlechange_add2_ts:{
                     none:["",""],
                     ltgt:["<",">"],
@@ -880,7 +929,7 @@
                 try{
                     wakeLock=await navigator.wakeLock.request()
                 }catch(e){
-                    logadd("WakeLockに失敗しました: ",e)
+                    logadd("WakeLockに失敗しました: "+e,"WakeLock")
                 }
             }
             function relWakeLock(){
@@ -1070,6 +1119,7 @@
             const gc=_=>document.getElementsByClassName(_)
             const timer={
                 alltop:g("timer_alltop"),
+                grtop:g("timer_grtop"),
                 top:g("timer_top"),
                 hour:g("timer_hour"),
                 min:g("timer_minute"),
@@ -1087,6 +1137,7 @@
                 prealarm_volume:0.5,
                 timerScore:0, //timerScore=hour*3600+min*60+sec
                 timerStop:0,
+                fontclass:"mahg-actv",
                 usesoundcode:"s1",
                 usepresoundcode:"p1",
                 repeattime_s:60,
@@ -1116,6 +1167,7 @@
                 cf.prealarm_volume=0.5
                 cf.timerScore=0
                 cf.timerStop=0
+                cf.fontclass="mahg-actv"
                 cf.usesoundcode="s1"
                 cf.usepresoundcode="p1"
                 cf.repeattime_s=300
@@ -1372,6 +1424,7 @@
                 self.timer_worker_score;
                 /**@param conf {{rendmode:number,activer:number}}*/
                 function timer_worker(conf){
+                    
                     timer_worker_stop=setInterval(async ()=>{
                         const score=await mget({cmd:"cf_get",cmd_k:"timerScore"})-((performance.now()-await mget({cmd:"maincache_get",cmd_k:"start"}))/1000)
                         self.timer_worker_score=score
@@ -1410,7 +1463,7 @@
                 relv(msgev.data.returnVal??msgev.data.cmd_v)
                 delete _wget_dt.relvstack[rcode]
             }
-            function wget(data){
+            function wget(data){//worker message data get
                 const i=_wget_dt.i++
                 const d={...data,...{respCode:i,type:"default"}}
                 return new Promise(function(relv){
@@ -1649,6 +1702,7 @@
             const setel={
                 main:g("setting"),
                 timerview:g("setting_timerview"),
+                font:g("setting_font"),
                 timelimit:g("setting_timelimit"),
                 timelimit_h:g("setting_timelimit_h"),
                 timelimit_m:g("setting_timelimit_m"),
@@ -1664,6 +1718,7 @@
                 timersize_print:g("setting_timersize_print"),
                 timersize_reset:g("setting_timersize_reset"),
                 prealarm:g("setting_prealarm"),
+                prealarm_gr01:[...gc("el_gr_01")], //要素を追加したタイミングで更新
                 prealarmvolumeprint:g("setting_prealarm_soundvolume_print"),
                 prealarmtimingprint:g("setting_prealarm_timing_print"),
                 pretiming_h:g("setting_prealarm_timing_h"),
@@ -1703,6 +1758,7 @@
                 el_b.blur()
                 el_s.blur()
                 el.blur()
+                setel.prealarm_gr01=[...gc("el_gr_01")]
             }
             function prealarmlistwrite(sec){
                 const h=Math.trunc(sec/3600).toString().padStart(2,"0")
@@ -1824,6 +1880,13 @@
                 limupdate()
                 timer_main_boot(true)
                 backup()
+            })
+            setel.font.addEventListener("input",e=>{
+                if (e.target.name==="timerfont"){
+                    cf.fontclass=e.target.value
+                    timer.grtop.classList.remove("mahg-actv","roboto-actv","mono-actv","arial-actv","sans-actv")
+                    timer.grtop.classList.add(cf.fontclass)
+                }
             })
             setel.timelimit_h.addEventListener("input",e=>{
                 e.target.value=Number(e.target.value)
@@ -2094,6 +2157,7 @@
                     setel.quickmenu_01.forEach(el=>{if(el.getAttribute("enableAuto")!=null)el.disabled=false})
                     setel.timerview.timerview.forEach(el=>el.disabled=false)
                     setel.prealarm.soundselect.forEach(el=>el.disabled=false)
+                    setel.prealarm_gr01.forEach(el=>el.disabled=false)
                     setel.pretiming_push.disabled=false
                     setel.countdown.cdactive.forEach(el=>el.disabled=false)
                     setel.countdown.startTiming.disabled=false
@@ -2112,6 +2176,7 @@
                     setel.quickmenu_01.forEach(el=>{if(el.getAttribute("enableAuto")!=null)el.disabled=true})
                     setel.timerview.timerview.forEach(el=>el.disabled=true)
                     setel.prealarm.soundselect.forEach(el=>el.disabled=true)
+                    setel.prealarm_gr01.forEach(el=>el.disabled=true)
                     setel.pretiming_push.disabled=true
                     setel.countdown.cdactive.forEach(el=>el.disabled=true)
                     setel.countdown.startTiming.disabled=true
@@ -2160,70 +2225,76 @@
                     else return "hms"
                 })()
                 setel.timerview.dispatchEvent(new Event("change"))
-                if (c.active){
+                if (c.active!=null){
                     cf.active=c.active
                 }
-                if (c.hour){
+                if (c.hour!=null){
                     cf.hour=c.hour
                 }
                 setel.timelimit_h.value=cf.hour
-                if (c.min){
+                if (c.min!=null){
                     cf.min=c.min
                 }
                 setel.timelimit_m.value=cf.min
-                if (c.sec){
+                if (c.sec!=null){
                     cf.sec=c.sec
                 }
                 setel.timelimit_s.value=cf.sec
-                if (c.volume){
+                if (c.volume!=null){
                     cf.volume=c.volume
                 }
                 setel.soundmain.soundvolume.value=cf.volume
                 setel.soundvolumeprint.textContent="現在の設定値: "+Math.floor(cf.volume*100)+"%"
                 sounds_k.forEach(name=>{if(name.startsWith("s")){volumechange(sounds[name])}})
-                if (c.prealarm_volume){
+                if (c.prealarm_volume!=null){
                     cf.prealarm_volume=c.prealarm_volume
                 }
                 setel.prealarm.soundvolume.value=cf.prealarm_volume
                 setel.prealarmvolumeprint.textContent="現在の設定値: "+Math.floor(cf.prealarm_volume*100)+"%"
                 sounds_k.forEach(name=>{if(name.startsWith("p")){volumechange(sounds[name],cf.prealarm_volume)}})
-                if (c.timerScore){
+                if (c.timerScore!=null){
                     cf.timerScore=c.timerScore
                 }
-                if (c.timerStop){
+                if (c.timerStop!=null){
                     cf.timerStop=c.timerStop
                 }
-                if (c.repeattime_s){
+                if (c.repeattime_s!=null){
                     cf.repeattime_s=c.repeattime_s
                 }
                 setel.repeattime.repeattime.value=(cf.repeattime_s/60).toFixed(1)
                 setel.repeattime_print.textContent="現在の設定値: "+(cf.repeattime_s/60).toFixed(1)+"分"
-                if (c.timersize){
+                if (c.timersize!=null){
                     cf.timersize=c.timersize
                 }
                 setel.timersize.timersize.value=cf.timersize
                 setel.timersize_print.textContent="現在の設定値: "+Math.round(cf.timersize*100)+"%"
                 timer.top.style.zoom=cf.timersize
-                if (c.usesoundcode){
+                if (c.fontclass!=null){
+                    cf.fontclass=c.fontclass
+                }
+                timer.grtop.classList.remove("mahg-actv","roboto-actv","mono-actv","arial-actv","sans-actv")
+                timer.grtop.classList.add(cf.fontclass)
+                setel.font.timerfont.value=cf.fontclass
+                if (c.usesoundcode!=null){
                     cf.usesoundcode=c.usesoundcode
                 }
                 setel.soundmain.soundselect.value=cf.usesoundcode
-                if (c.usepresoundcode){
+                if (c.usepresoundcode!=null){
                     cf.usepresoundcode=c.usepresoundcode
                 }
                 setel.prealarm.soundselect.value=cf.usepresoundcode
-                if (c.item_maxmin){
+                if (c.item_maxmin!=null){
                     cf.item_maxmin=c.item_maxmin
                 }
-                if (c.prealarm_sec){
+                if (c.prealarm_sec!=null){
                     cf.prealarm_sec=c.prealarm_sec
                 }
                 cf.prealarm_sec.forEach(prealarmlistwrite)
-                if (c.countdown_sec){
+                if (c.countdown_sec!=null){
                     cf.countdown_sec=c.countdown_sec
                 }
                 setel.countdown.startTiming.value=cf.countdown_sec[1]-1
-                if (c.countdownSoundActive){
+                if (c.countdownSoundActive!=null){
                     cf.countdownSoundActive=c.countdownSoundActive
                 }
                 setel.timerview.dispatchEvent(new Event("change"))

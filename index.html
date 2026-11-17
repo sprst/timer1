@@ -4,12 +4,14 @@
         <meta charset=utf-8>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="色々な機能が備わったWebタイマーです。">
-        <title>Online Digital Timer v1.16.0</title>
+        <title>Online Digital Timer v1.16.1</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-        <link href="https://seedfont.github.io/mahg-sans-digit-tnum/dist/400/swap.css" rel="stylesheet">
-        <link href="https://seedfont.github.io/mahg-sans-digit-tnum/dist/700/swap.css" rel="stylesheet">
+        <link rel="preconnect" href="https://seedfont.github.io" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap">
+        <link rel="stylesheet" href="https://seedfont.github.io/mahg-sans-digit-tnum/dist/400/swap.css">
+        <link rel="stylesheet" href="https://seedfont.github.io/mahg-sans-digit-tnum/dist/700/swap.css">
         <style>
             html{
                 width:100vw;
@@ -59,6 +61,12 @@
             }
             #timer_grtop.arial-actv{
                 font-family:Arial;
+                padding-top:64px;
+                padding-bottom:96px;
+                zoom:1;
+            }
+            #timer_grtop.notojp-actv{
+                font-family:'Noto Sans JP';
                 padding-top:64px;
                 padding-bottom:96px;
                 zoom:1;
@@ -403,6 +411,7 @@
                                 <label><input type="radio" name="timerfont" value="roboto-actv"/>Roboto</label>
                                 <label><input type="radio" name="timerfont" value="mono-actv"/>MonoSpace</label>
                                 <label><input type="radio" name="timerfont" value="arial-actv"/>Arial</label>
+                                <label><input type="radio" name="timerfont" value="notojp-actv" />Noto Sans JP</label>
                                 <label><input type="radio" name="timerfont" value="sans-actv" />Sans Serif</label>
                             </form>
                         </details>
@@ -498,6 +507,13 @@
                             </form>
                         </details>
                         <details class="settingDetails">
+                            <summary title="ユーザーがページに居るときと居ない時の動作などを変更します。">ページ制御</summary>
+                            <form id="setting_page" action="#" onsubmit="event.preventDefault()">
+                                <label>ケチモード: <input type="checkbox" name="kechiactive" checked /></label>
+                                <p>ケチモードとは、ユーザーがページを開いていない間に行われるバックグラウンドでの描画処理を停止する設定です。これにより軽量化が期待できますが、ピクチャー・イン・ピクチャーなどの隅で表示する時にページを開いていないと判断されタイマーの描画処理が停止するおそれがあります。</p>
+                            </form>
+                        </details>
+                        <details class="settingDetails">
                             <summary title="データ消去などの保存データ関連の設定です。">データ・情報</summary>
                             <button class="btnsmall" id="powerwash" title="ブラウザに保存されている全ての保存データを削除します。">データ全消去</button>
                             <button class="btnsmall" id="to_about" title="このプログラムの詳細ページを開きます。">詳細</button>
@@ -540,7 +556,7 @@
                 <div id="about_top" class="maindialog">
                     <p>About - Online Digital Timer</p>
                     <p> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </p>
-                    <p>Online Digital Timer v1.16.0</p>
+                    <p>Online Digital Timer v1.16.1</p>
                     <details>
                         <summary>公式公開URL</summary>
                         <p><a href="https://ks-seed0310.github.io/timer1/timer1/latest.html" rel="noopener noreferer" target="_blank">https://ks-seed0310.github.io/timer1/timer1/latest.html</a></p>
@@ -830,6 +846,16 @@
                                     </ul>
                                 </details>
                             </li>
+                            <li>
+                                <details>
+                                    <summary>v1.16.1</summary>
+                                    <ul>
+                                        <li>フォント選択にNoto Sans JP追加</li>
+                                        <li>ケチモード(エコモード)ON/OFF機能追加</li>
+                                        <li>Workerシステム小規模アップデート</li>
+                                    </ul>
+                                </details>
+                            </li>
                         </ul>
                     </details>
                     <p> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </p>
@@ -890,7 +916,7 @@
         <script>
             //最初の方にタイマー非依存処理を書いておく。
             const constant={
-                title:"Online Digital Timer v1.16.0",
+                title:"Online Digital Timer v1.16.1",
                 titlechange_add2_ts:{
                     none:["",""],
                     ltgt:["<",">"],
@@ -1151,6 +1177,7 @@
                 prealarm_sec:[],
                 countdown_sec:[1,6,1], //[start,stop,step]。range([1,6,1])->[1,2,3,4,5]
                 countdownSoundActive:true, //5秒前カウントダウンがアクティブか(まだ使ってない)
+                kechimode:true, //ケチモード
             }
             const maincache={
                 start:0,
@@ -1181,6 +1208,7 @@
                 cf.prealarm_sec=[]
                 cf.countdown_sec=[1,6,1]
                 cf.countdownSoundActive=true
+                cf.kechimode=true
             }
             function maincacheReset(){
                 maincache.start=0
@@ -1433,6 +1461,7 @@
                     timer_worker_stop=setInterval(async ()=>{
                         const score=await mget({cmd:"cf_get",cmd_k:"timerScore"})-((performance.now()-await mget({cmd:"maincache_get",cmd_k:"start"}))/1000)
                         self.timer_worker_score=score
+                        mget({cmd:"timer_sound_play",config:{sec:score}})
                         mget({cmd:"timer_worker_render_run",config:[score,conf.rendmode,conf.activer]})
                         if (score<=0||await mget({cmd:"maincache_get",cmd_k:"stoped"})){
                             timer_worker_stopfunc()
@@ -1510,6 +1539,16 @@
                             _worker_cache.timer_main.lastscore=e.data.cmd_v
                             break;
                         }
+                        case "timer_sound_play":{
+                            const conf=e.data.config
+                            if(conf.sec){
+                                timer_cdsound(conf.sec)
+                                worker.postMessage({type:"resp",returnVal:true,respCode:e.data.respCode??0})
+                            }else{
+                                worker.postMessage({type:"resp",returnVal:false,respCode:e.data.respCode??0})
+                            }
+                            break;
+                        }
                         default:{
                             console.log("worker_undefined(window側): ",e.data.cmd)
                             worker.postMessage({type:"resp",returnVal:null,respCode:e.data.respCode??0})
@@ -1519,10 +1558,11 @@
             })
             function timer_worker_render(conf){
                 const score=conf[0]
+                //timer_cdsound(score)
                 const rendmode=conf[1]
                 const activer=conf[2]
                 const re=(function(){
-                    if (document.visibilityState==="visible"){
+                    if (!cf.kechimode||document.visibilityState==="visible"){
                         if (score%1<0.5){
                             timer.hourMin.style.opacity=0.05
                             timer.minSec.style.opacity=0.05
@@ -1539,7 +1579,6 @@
                     }
                 })()
                 timer_main_titlesys(re)
-                timer_cdsound(score)
                 return true
             }
             //URL.revokeObjectURL(worker_c_blob) 開発段階なので消す
@@ -1722,6 +1761,7 @@
                 timersize:g("setting_timersize"),
                 timersize_print:g("setting_timersize_print"),
                 timersize_reset:g("setting_timersize_reset"),
+                page:g("setting_page"),
                 prealarm:g("setting_prealarm"),
                 prealarm_gr01:[...gc("el_gr_01")], //要素を追加したタイミングで更新
                 prealarmvolumeprint:g("setting_prealarm_soundvolume_print"),
@@ -1889,7 +1929,7 @@
             setel.font.addEventListener("input",e=>{
                 if (e.target.name==="timerfont"){
                     cf.fontclass=e.target.value
-                    timer.grtop.classList.remove("mahg-actv","roboto-actv","mono-actv","arial-actv","sans-actv")
+                    timer.grtop.classList.remove("mahg-actv","roboto-actv","mono-actv","arial-actv","notojp-actv","sans-actv")
                     timer.grtop.classList.add(cf.fontclass)
                 }
             })
@@ -1999,6 +2039,11 @@
                 setel.timersize_print.textContent="現在の設定値: 100%"
                 setel.timersize.timersize.value=1
                 timer.top.style.zoom=1
+            })
+            setel.page.addEventListener("input",e=>{
+                if (e.target.name==="kechiactive"){
+                    cf.kechimode=e.target.checked
+                }
             })
             setel.prealarm.addEventListener("input",e=>{
                 if (e.target.name==="soundvolume"){
@@ -2277,7 +2322,7 @@
                 if (c.fontclass!=null){
                     cf.fontclass=c.fontclass
                 }
-                timer.grtop.classList.remove("mahg-actv","roboto-actv","mono-actv","arial-actv","sans-actv")
+                timer.grtop.classList.remove("mahg-actv","roboto-actv","mono-actv","arial-actv","notojp-actv","sans-actv")
                 timer.grtop.classList.add(cf.fontclass)
                 setel.font.timerfont.value=cf.fontclass
                 if (c.usesoundcode!=null){
@@ -2302,6 +2347,10 @@
                 if (c.countdownSoundActive!=null){
                     cf.countdownSoundActive=c.countdownSoundActive
                 }
+                if (c.kechimode!=null){
+                    cf.kechimode=c.kechimode
+                }
+                setel.page.kechiactive.checked=cf.kechimode
                 setel.timerview.dispatchEvent(new Event("change"))
                 timer_main_boot()
                 buttonsys()

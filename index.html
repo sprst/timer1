@@ -1,15 +1,20 @@
+<!--
+SPDX-License-Identifier: Apache-2.0
+Copyright (c) 2026 seed
+-->
+
 <!doctype html>
 <html lang=ja>
     <head>
         <meta charset=utf-8>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="色々な機能が備わったWebタイマーです。">
-        <title>Online Digital Timer v1.16.1</title>
+        <title>Online Digital Timer v1.17.0</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="preconnect" href="https://seedfont.github.io" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap">
         <link rel="stylesheet" href="https://seedfont.github.io/mahg-sans-digit-tnum/dist/400/swap.css">
         <link rel="stylesheet" href="https://seedfont.github.io/mahg-sans-digit-tnum/dist/700/swap.css">
         <style>
@@ -43,7 +48,7 @@
             }
             #timer_grtop.mahg-actv{
                 font-family:mahg-sans-digit;
-                padding-top:48px;
+                padding-top:16px;
                 padding-bottom:80px;
                 zoom:1.06; /*ceil(122/116*100)/100*/
             }
@@ -100,7 +105,7 @@
             #timer_top.active2.lastlen4{
                 --fs:calc(var(--width)/4.0);
             }
-            
+
             #timer_top.active3.lastlen2{
                 --fs:calc(var(--width)/4.2);
             }
@@ -147,8 +152,8 @@
                 cursor:not-allowed;
             }
             #setting{
-                width:80%;
-                height:80%;
+                width:85%;
+                height:85%;
                 padding:0px;
                 border-radius:24px;
                 border:0px;
@@ -230,8 +235,8 @@
                 cursor:default;
             }
             dialog.maindialog{
-                width:80%;
-                height:80%;
+                width:85%;
+                height:85%;
                 padding:0px;
                 border-radius:24px;
                 border:0px;
@@ -407,12 +412,15 @@
                         <details class="settingDetails">
                             <summary title="フォントを設定します。">タイマーフォント設定</summary>
                             <form id="setting_font" action="#" onsubmit="event.preventDefault()">
-                                <label><input type="radio" name="timerfont" value="mahg-actv" checked />Mahg Sans Digit</label>
-                                <label><input type="radio" name="timerfont" value="roboto-actv"/>Roboto</label>
-                                <label><input type="radio" name="timerfont" value="mono-actv"/>MonoSpace</label>
-                                <label><input type="radio" name="timerfont" value="arial-actv"/>Arial</label>
-                                <label><input type="radio" name="timerfont" value="notojp-actv" />Noto Sans JP</label>
-                                <label><input type="radio" name="timerfont" value="sans-actv" />Sans Serif</label>
+                                <p>タイマーフォントを選択</p>
+                                <span style="font-size:16px;align-items:center;display:flex;flex-wrap:wrap;">
+                                    <label style="display:flex;align-items:center;white-space:nowrap;"><input type="radio" name="timerfont" value="mahg-actv" checked />Mahg Sans Digit</label>
+                                    <label style="display:flex;align-items:center;white-space:nowrap;"><input type="radio" name="timerfont" value="roboto-actv" />Roboto</label>
+                                    <label style="display:flex;align-items:center;white-space:nowrap;"><input type="radio" name="timerfont" value="mono-actv" />MonoSpace</label>
+                                    <label style="display:flex;align-items:center;white-space:nowrap;"><input type="radio" name="timerfont" value="arial-actv" />Arial</label>
+                                    <label style="display:flex;align-items:center;white-space:nowrap;"><input type="radio" name="timerfont" value="notojp-actv" />Noto Sans JP</label>
+                                    <label style="display:flex;align-items:center;white-space:nowrap;"><input type="radio" name="timerfont" value="sans-actv" />Sans Serif</label>
+                                </span>
                             </form>
                         </details>
                         <details class="settingDetails">
@@ -420,7 +428,7 @@
                             <form id="setting_sound" action="#" onsubmit="event.preventDefault()">
                                 <input type=range min=0 max=1 step=0.05 value=0.5 name="soundvolume" style="width:60%" />
                                 <span id="setting_soundvolume_print">現在の設定値: 50%</span>
-                                <span style="font-size:20px;align-items:center;display:flex;flex-wrap:wrap;" />
+                                <span style="font-size:20px;align-items:center;display:flex;flex-wrap:wrap;">
                                     <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s1" checked />Alarm1</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s1',this)" onkeydown="if(event.key==='Enter'){this.dispatchEvent(new Event('click')
 )}" style="cursor:pointer;" tabindex=0></sp-e><sp-e s=16></sp-e></span>
                                     <span style="display:flex;align-items:center;white-space:nowrap;"><label><input type="radio" name="soundselect" value="s2" />Alarm2</label><sp-e s=8 template="volumeIcon1" childstyle="display:flex;align-items:center;" title="このサウンドを再生する" onclick="playsound_demo('s2',this)" onkeydown="if(event.key==='Enter'){this.dispatchEvent(new Event('click')
@@ -556,7 +564,7 @@
                 <div id="about_top" class="maindialog">
                     <p>About - Online Digital Timer</p>
                     <p> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </p>
-                    <p>Online Digital Timer v1.16.1</p>
+                    <p>Online Digital Timer v1.17.0</p>
                     <details>
                         <summary>公式公開URL</summary>
                         <p><a href="https://ks-seed0310.github.io/timer1/timer1/latest.html" rel="noopener noreferer" target="_blank">https://ks-seed0310.github.io/timer1/timer1/latest.html</a></p>
@@ -850,9 +858,19 @@
                                 <details>
                                     <summary>v1.16.1</summary>
                                     <ul>
-                                        <li>フォント選択にNoto Sans JP追加</li>
-                                        <li>ケチモード(エコモード)ON/OFF機能追加</li>
-                                        <li>Workerシステム小規模アップデート</li>
+                                        <li><p>フォント選択にNoto Sans JP追加</p></li>
+                                        <li><p>ケチモード(エコモード)ON/OFF機能追加</p></li>
+                                        <li><p>Workerシステム小規模アップデート</p></li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>v1.17.0</summary>
+                                    <ul>
+                                        <li><p>タイマー位置調整</p></li>
+                                        <li><p>CC BY 4.0 LicenseからApache 2.0 Licenseへ移行</p></li>
+                                        <li><p>その他小規模変更</p></li>
                                     </ul>
                                 </details>
                             </li>
@@ -860,43 +878,17 @@
                     </details>
                     <p> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </p>
                     <p>© Online Digital Timer 2026 seed</p>
-                    <div style="text-align:center;">
-                        <a href="https://creativecommons.org/licenses/by/4.0/deed.ja" target="_blank" rel="noopener noreferer">
-                            <img src="https://licensebuttons.net/l/by/3.0/88x31.png" alt="クリエイティブ・コモンズ・ライセンス">
-                        </a>
-                    </div>
-                    <p>このプログラムは、CC BY 4.0 Licenseにより公開されています。</p>
+                    <p>このプログラムは、Apache 2.0 Licenseにより公開されています。</p>
                     <p>プログラムの学習に使ったり、このタイマーをベースにして新しいものを作ったり...</p>
                     <p>色々な使い方ができますので楽しんで使ってください！</p>
                     <details>
-                        <summary>勘違い防止のための難しい文章が書いてあるかもしれない独自ルール</summary>
-                        <h3>1. クレジット</h3>
-                        <p>CC BY 4.0 Licenseでは、利用者は、利用する媒体から見ることが出来る場所に表示する義務を負います。</p>
-                        <p>まあ基本的には書きましょう。おすすめはフッターやクレジットタブを作ることです。</p>
-                        <p>私は書いてほしいなんて思っていませんが、万が一のトラブル防止のためにクレジットだけでも書いておくことを勧めます。書けば自由なライセンスなので。</p>
-                        <h3>2. 変更点の明示</h3>
-                        <p>「どこを変えました」って書かなくて良いです！クレジットに「参考にして作っています」「ベースにして編集しています」等で十分です！</p>
-                        <p>「〇〇が理由で△△を変えました」←こんな文章要らないです！変えたことだけクレジットに書いておくと良いかも?</p>
-                        <h3>3. お墨付きの禁止</h3>
-                        <p>クレジットを記載する際、あたかも私が応援しているような記述はやめてください。トラブル嫌です。</p>
-                        <p>(言うまでもないね)</p>
-                        <h3>4. 他の人の邪魔の禁止</h3>
-                        <p>妨害など人の嫌がることはやめましょう！</p>
-                        <h3>5. 自由の尊重</h3>
-                        <p>MITライセンスみたいなことになっていますが(実際は違うライセンスですので勘違いしないでね)、クレジットを記載しておけば後はあなたの自由にできます！</p>
-                        <p>楽しいアレンジライフを送ってください！</p>
-                        <h3>最後に</h3>
-                        <p>私自身もまだまだライセンスには詳しくないし、使いこなせてもいません。(Non-Library勢だから使うところもないから覚えないし)</p>
-                        <p>けど、ライセンスは覚えていて損はないです！</p>
-                        <p>守っていなければ怒るなんてことはかなりよっぽどのことがない限りやらないと思いますが、間違ってもいいので練習になったら嬉しいです！</p>
-                        <p>ぜひ一度CC BY 4.0を見てみることをおすすめします！もっと詳しく慣れて使いこなせるようになると思います！</p>
-                    </details>
-                    <details>
-                        <summary>なぜ、わざわざCC BY 4.0 License?</summary>
+                        <summary>なぜ、わざわざApache 2.0 License?</summary>
                         <p>それは、著作権の学習になればいいかなと思ったからです。</p>
                         <p>別にクレジットを書いてほしいとは何一つ思っていませんが、著作権表記を実際に練習してもらって実感するのがいいかなと思ったからです。</p>
                         <p>練習や学習にでも役立てていただけると嬉しいです。</p>
                     </details>
+                    <p>※ちなみに私がアホすぎてこのライセンスは滅茶苦茶変わっています</p>
+                    <p>CC BY-SA 4.0 License　→　CC BY 4.0 License　→　Apache License 2.0</p>
                     <p>私の方針は、「楽しんでふざける」です！</p>
                     <p>ぜひ、楽しみながらふざけたプログラムを作ってみてはいかがでしょうか？</p>
                     <button class="btn" style="font-size:1rem;" onclick="menuel.about.close()">戻る</button>
@@ -916,7 +908,7 @@
         <script>
             //最初の方にタイマー非依存処理を書いておく。
             const constant={
-                title:"Online Digital Timer v1.16.1",
+                title:"Online Digital Timer v1.17.0",
                 titlechange_add2_ts:{
                     none:["",""],
                     ltgt:["<",">"],
@@ -1105,13 +1097,13 @@
                 audio.currentTime=0
                 if (reset)audio.load()
             }
-            function playsound_demo(audioid,self){
+            function playsound_demo(audioid,self_){
                 const audio=sounds[audioid]
                 if (!audio){
-                    self.childNodes[0].childNodes[0].style.opacity=0.5
+                    self_.style.opacity=0.5
                     return
                 }
-                self.childNodes[0].childNodes[0].style.opacity=1
+                self_.style.opacity=1
                 Object.values(sounds).forEach(se=>{stopsound(se)})
                 return playsound(audio)
             }
@@ -1124,10 +1116,10 @@
                 }
                 connectedCallback(){
                     const template_ts={
-                        volumeIcon1:`<svg viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="11" fill="#619fcf" /><path d="M10.5 6L6.5 9.5H3.5v5h3l4 3.5V6z" fill="#ffffff" /><g fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 9a4 4 0 0 1 0 6" /><path d="M17.5 6.5a8 8 0 0 1 0 11" /></g></svg>`,
-                        fullscreen1:`<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M9.5 4.5H4.5v5L6.7 7.3l2.8 2.8 1.4-1.4-2.8-2.8z"/><path d="M14.5 4.5h5v5l-2.2-2.2-2.8 2.8-1.4-1.4 2.8-2.8z"/><path d="M4.5 14.5v5h5l-2.2-2.2 2.8-2.8-1.4-1.4-2.8 2.8z"/><path d="M19.5 14.5v5h-5l2.2-2.2-2.8-2.8 1.4-1.4 2.8 2.8z"/></svg>`,
-                        fullscreen2:`<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="scratch-fullscreen-exit-icon"><path d="M10 5v5H5l2.2-2.2-3.3-3.3 1.4-1.4 3.3 3.3z" /><path d="M14 5v5h5l-2.2-2.2 3.3-3.3-1.4-1.4-3.3 3.3z" /><path d="M10 19v-5H5l2.2 2.2-3.3 3.3 1.4 1.4 3.3-3.3z" /><path d="M14 19v-5h5l-2.2 2.2 3.3 3.3-1.4 1.4-3.3-3.3z" /></svg>`,
-                        trashbox_red:`<svg viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="12" fill="#FF3B30" /><g stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M10.5 7V6a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1" /><path d="M7 7h10" /><path d="M8 7l0.7 9.5a1.5 1.5 0 0 0 1.5 1.5h3.6a1.5 1.5 0 0 0 1.5-1.5L16 7" /><path d="M10.5 10.5v4M13.5 10.5v4" /></g></svg>`,
+                        volumeIcon1:`<svg viewBox="0 0 24 24" width="24" height="24" class="spaceel_volumeicon1"><circle cx="12" cy="12" r="11" fill="#619fcf" /><path d="M10.5 6L6.5 9.5H3.5v5h3l4 3.5V6z" fill="#ffffff" /><g fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 9a4 4 0 0 1 0 6" /><path d="M17.5 6.5a8 8 0 0 1 0 11" /></g></svg>`,
+                        fullscreen1:`<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="spaceel_fullscreen1"><path d="M9.5 4.5H4.5v5L6.7 7.3l2.8 2.8 1.4-1.4-2.8-2.8z"/><path d="M14.5 4.5h5v5l-2.2-2.2-2.8 2.8-1.4-1.4 2.8-2.8z"/><path d="M4.5 14.5v5h5l-2.2-2.2 2.8-2.8-1.4-1.4-2.8 2.8z"/><path d="M19.5 14.5v5h-5l2.2-2.2-2.8-2.8 1.4-1.4 2.8 2.8z"/></svg>`,
+                        fullscreen2:`<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="spaceel_fullscreen2"><path d="M10 5v5H5l2.2-2.2-3.3-3.3 1.4-1.4 3.3 3.3z" /><path d="M14 5v5h5l-2.2-2.2 3.3-3.3-1.4-1.4-3.3 3.3z" /><path d="M10 19v-5H5l2.2 2.2-3.3 3.3 1.4 1.4 3.3-3.3z" /><path d="M14 19v-5h5l-2.2 2.2 3.3 3.3-1.4 1.4-3.3-3.3z" /></svg>`,
+                        trashbox_red:`<svg viewBox="0 0 24 24" width="24" height="24" class="spaceel_trashbox_red"><circle cx="12" cy="12" r="12" fill="#FF3B30" /><g stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M10.5 7V6a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1" /><path d="M7 7h10" /><path d="M8 7l0.7 9.5a1.5 1.5 0 0 0 1.5 1.5h3.6a1.5 1.5 0 0 0 1.5-1.5L16 7" /><path d="M10.5 10.5v4M13.5 10.5v4" /></g></svg>`,
                     }
                     const size=this.getAttribute("s")
                     const mirror=this.getAttribute("mirror")!==null
@@ -2171,6 +2163,7 @@
             }
             function buttonsys(){
                 if (maincache.soundLoaded){
+                    document.body.style.cursor=""
                     if (maincache.finished){
                         menuel.start.disabled=false
                         menuel.reset.disabled=false
@@ -2181,6 +2174,7 @@
                         menuel.stop.disabled=false
                     }
                 }else{
+                    document.body.style.cursor="wait"
                     menuel.start.disabled=true
                     menuel.reset.disabled=true
                     menuel.stop.disabled=true
@@ -2198,7 +2192,7 @@
                         menuel.start.textContent="再開"
                     }
                 }
-                if (maincache.stoped){
+                if (maincache.finished/*maincache.stoped*/){
                     timer.hourMin.style.opacity=""
                     timer.minSec.style.opacity=""
                     setel.timelimit_h.disabled=false
